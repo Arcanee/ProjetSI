@@ -7,6 +7,7 @@ static struct symbolTab tab;
 static int init = 0;
 
 
+
 void initTab() {
     if (!init) {
         tab.size = 4;
@@ -25,6 +26,13 @@ void addSym(char *s){
             tab.table = realloc(tab.table, 2*tab.size*sizeof(struct Symbol)); 
             tab.size = 2*tab.size; 
         }
+
+        //Check duplicates
+        if (check_duplicate(s)) {
+            printf("Redefinition of variable\n");
+            exit(-1);
+        }
+
         strcpy(tab.table[tab.nb_symboles].nom, s); 
         tab.table[tab.nb_symboles].depth = tab.global_depth; 
         tab.table[tab.nb_symboles].init = 0; 
@@ -72,4 +80,46 @@ int global_depth()
 void inc_depth()
 {
     tab.global_depth += 1; 
+}
+
+void dec_depth()
+{
+    tab.global_depth --;
+}
+
+void set_sym_init()
+{
+    tab.table[tab.nb_symboles-1].init = 1;
+}
+
+int get_addr(char* s)
+{
+    int addr = -1; 
+    for (int i = 0; i < tab.nb_symboles; i++)
+    {
+        if (!strcmp(s, tab.table[i].nom))
+        {
+            addr = i; 
+        }
+    }
+    if (addr ==  -1)
+    {
+        printf("Var not in scope\n"); 
+        exit(-1); 
+    }
+    return addr; 
+}
+
+int check_duplicate(char* s)
+{
+    int res = 0; 
+    for (int i = 0; i < tab.nb_symboles; i++)
+    {   
+        if (tab.table[i].depth == tab.global_depth && !strcmp(s, tab.table[i].nom))
+        {
+            res = 1; 
+            printf("duplicate between %s and %s\n", s, tab.table[i].nom);
+        }
+    }
+    return res; 
 }

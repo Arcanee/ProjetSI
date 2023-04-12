@@ -25,7 +25,11 @@ void clearTab();
 void printSym(struct Symbol s);
 void printTab();
 int global_depth(); 
-void inc_depth(); 
+void inc_depth();
+void dec_depth();
+void set_sym_init();
+int get_addr(char* s);
+int check_duplicate(char* s);
 
 
 #endif

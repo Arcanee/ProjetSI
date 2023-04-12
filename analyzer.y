@@ -30,7 +30,7 @@ functions:
   ;
 
 function:
-    type globalid tLPAR params tRPAR block
+    type tID tLPAR params tRPAR block
   ;
 
 type:
@@ -49,12 +49,12 @@ params_void:
   ;
 
 params_full:
-    type globalid
-  | type globalid tCOMMA params_full
+    type tID
+  | type tID tCOMMA params_full
   ;
 
 block:
-  tLBRACE  {inc_depth();} instructions tRBRACE 
+  tLBRACE  {inc_depth();} instructions tRBRACE {removeSym(); dec_depth();}
   ;
 
 instructions:
@@ -90,7 +90,7 @@ expr:
   ;
 
 term:
-    globalid
+    tID
   | tNB
   | funccall
   ;
@@ -124,13 +124,13 @@ assign:
   ;
 
 declar:
-    tINT ids
-  | tINT ids tASSIGN expr
+    tINT ids 
+  | tINT  ids tASSIGN {set_sym_init();} expr 
   ;
 
 ids:
-    globalid
-  | globalid tCOMMA ids
+    tID { addSym($1); printTab();}
+  | tID { addSym($1); printTab();} tCOMMA ids 
   ;
 
 funcreturn:
@@ -138,7 +138,7 @@ funcreturn:
   ;
 
 funccall:
-    globalid tLPAR callparams tRPAR
+    tID tLPAR callparams tRPAR
   ;
 
 callparams:
@@ -153,10 +153,6 @@ callparams_void:
 callparams_full:
     expr
   | expr tCOMMA callparams_full
-  ;
-
-globalid:
-  tID { addSym($1); printTab();}
   ;
 
 %%

@@ -6,11 +6,14 @@ analyzer.tab.h analyzer.tab.c: analyzer.y
 lex.yy.c: analyzer.l analyzer.tab.h
 	flex analyzer.l
 
-analyzer: lex.yy.c analyzer.tab.c analyzer.tab.h
+analyzer: lex.yy.c analyzer.tab.c analyzer.tab.h tabSymbole.c tabSymbole.h
 	gcc -o analyzer analyzer.tab.c lex.yy.c tabSymbole.c
 
 clean:
-	rm analyzer analyzer.tab.h analyzer.tab.c lex.yy.c analyzer.output
+	rm analyzer analyzer.tab.h analyzer.tab.c lex.yy.c analyzer.output test_tabSymbole
 
 test: all
 	cat ex.c | ./analyzer
+
+test_tab: tabSymbole.c tabSymbole.h test_tabSymbole.c
+	gcc -o test_tabSymbole tabSymbole.c test_tabSymbole.c

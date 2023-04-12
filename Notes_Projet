@@ -1,0 +1,8 @@
+Table des symboles : défendre le choix du tableau + realloc
+Makefile de la tabSym : inclure le .o ?
+
+
+expr arith:
+    var tmp pour chaque etape intermediaire de calcul (dans la tabsym)
+    9 cas de figure : tmp / cste / var X tmp / cste / var
+    1 sol : On a E -> E * E ; on part du principe que E est forcément une tmp
