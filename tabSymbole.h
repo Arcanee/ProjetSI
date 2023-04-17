@@ -27,9 +27,12 @@ void printTab();
 int global_depth(); 
 void inc_depth();
 void dec_depth();
-void set_sym_init();
+void set_sym_init(int index);
 int get_addr(char* s);
 int check_duplicate(char* s);
-
+int get_last(); 
+int get_next_last();
+void supp_last();
+int is_init(char* s);
 
 #endif

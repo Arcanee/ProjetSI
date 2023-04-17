@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tabSymbole.h"
+#include "asm_tab.h"
+#define NIL -1
 %}
 
 %code provides {
@@ -16,7 +18,10 @@
 
 %token <s> tID
 %token <i> tNB
-%token tIF tELSE tWHILE tPRINT tRETURN tINT tVOID tADD tSUB tMUL tDIV tLT tLE tGT tGE tEQ tNEQ tASSIGN tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA tERROR
+%token tIF tELSE tWHILE tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA tERROR
+%left tADD tSUB
+%left tMUL tDIV
+
 
 %%
 
@@ -79,28 +84,43 @@ condins:
   | tIF tLPAR expr tRPAR block tELSE block
   ;
 
+
 expr:
     term
   | tNOT expr
-  | term op expr
+  | term tADD expr {add_asm(2, get_next_last(), get_next_last(), get_last(), 3); 
+                  supp_last();}
+  | term tSUB expr {add_asm(3, get_next_last(), get_next_last(), get_last(), 3); 
+                  supp_last();}
+  | term tMUL expr {add_asm(4, get_next_last(), get_next_last(), get_last(), 3); 
+                  supp_last();}
+  | term tDIV expr {add_asm(5, get_next_last(), get_next_last(), get_last(), 3); 
+                  supp_last();}
+  | term op expr {add_asm(0, get_next_last(), get_next_last(), get_last(), 3); 
+                  supp_last();}
   | tLPAR expr tRPAR
   | tLPAR expr tRPAR op expr
   | tADD expr
-  | tSUB expr
+  | tSUB expr {addSym("_"); 
+               add_asm(0, get_last(), 0, NIL, 2);
+               add_asm(3, get_next_last(), get_last(), get_next_last(), 3);
+               supp_last(); }
   ;
 
 term:
-    tID
-  | tNB
+    tID {addSym("_");
+          if (is_init($1))
+            {add_asm(1, get_last(), get_addr($1), NIL, 2);}
+          else
+            {printf("Var not initialized\n"); exit(-1);}
+        }
+  | tNB {addSym("_"); 
+         add_asm(0, get_last(), $1, NIL, 2); }
   | funccall
   ;
 
 op:
     tASSIGN
-  | tADD
-  | tSUB
-  | tMUL
-  | tDIV
   | tLT
   | tLE
   | tGT
@@ -120,19 +140,22 @@ print:
     tPRINT tLPAR expr tRPAR
 
 assign:
-    ids tASSIGN expr
+    tID tASSIGN expr {set_sym_init(get_addr($1)); 
+                     add_asm(1, get_addr($1), get_last(), NIL, 2);  
+                     supp_last();} 
   ;
 
 declar:
-    tINT ids 
-  | tINT  ids tASSIGN {set_sym_init();} expr 
+    tINT tID {addSym($2);}
+  | tINT tID {addSym($2);} tASSIGN {set_sym_init(get_addr($2));} expr {add_asm(1, get_addr($2), get_last(), NIL, 2); 
+                                                                        supp_last();}
   ;
 
-ids:
-    tID { addSym($1); printTab();}
-  | tID { addSym($1); printTab();} tCOMMA ids 
+/*ids:
+    tID 
+  | tID {addSym($1); printTab();} tCOMMA ids 
   ;
-
+*/
 funcreturn:
     tRETURN expr
   ;
@@ -165,4 +188,5 @@ void yyerror(const char *msg) {
 int main(void) {
   initTab();
   yyparse();
+  print_asm_tab();
 }

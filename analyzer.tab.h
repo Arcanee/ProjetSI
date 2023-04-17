@@ -58,17 +58,17 @@ extern int yydebug;
     tRETURN = 264,
     tINT = 265,
     tVOID = 266,
-    tADD = 267,
-    tSUB = 268,
-    tMUL = 269,
-    tDIV = 270,
-    tLT = 271,
-    tLE = 272,
-    tGT = 273,
-    tGE = 274,
-    tEQ = 275,
-    tNEQ = 276,
-    tASSIGN = 277,
+    tLT = 267,
+    tLE = 268,
+    tGT = 269,
+    tGE = 270,
+    tEQ = 271,
+    tNEQ = 272,
+    tASSIGN = 273,
+    tADD = 274,
+    tSUB = 275,
+    tDIV = 276,
+    tMUL = 277,
     tAND = 278,
     tOR = 279,
     tNOT = 280,
@@ -86,7 +86,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "analyzer.y"
+#line 14 "analyzer.y"
  
     char* s;
     int i; 
@@ -104,7 +104,7 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 /* "%code provides" blocks.  */
-#line 7 "analyzer.y"
+#line 9 "analyzer.y"
 
   int yylex (void);
   void yyerror (const char *);

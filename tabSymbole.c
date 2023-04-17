@@ -87,9 +87,14 @@ void dec_depth()
     tab.global_depth --;
 }
 
-void set_sym_init()
+/*void set_sym_init()
 {
     tab.table[tab.nb_symboles-1].init = 1;
+}*/
+
+void set_sym_init(int index)
+{
+     tab.table[index].init = 1;
 }
 
 int get_addr(char* s)
@@ -113,13 +118,37 @@ int get_addr(char* s)
 int check_duplicate(char* s)
 {
     int res = 0; 
-    for (int i = 0; i < tab.nb_symboles; i++)
-    {   
-        if (tab.table[i].depth == tab.global_depth && !strcmp(s, tab.table[i].nom))
-        {
-            res = 1; 
-            printf("duplicate between %s and %s\n", s, tab.table[i].nom);
+
+    if (strcmp(s, "_")) {
+        for (int i = 0; i < tab.nb_symboles; i++)
+        {   
+            if (tab.table[i].depth == tab.global_depth && !strcmp(s, tab.table[i].nom) )
+            {
+                res = 1; 
+                printf("duplicate between %s and %s\n", s, tab.table[i].nom);
+            }
         }
     }
     return res; 
+}
+
+int get_last()
+{
+    return tab.nb_symboles-1;
+}
+
+int get_next_last()
+{
+    return tab.nb_symboles-2;
+}
+
+void supp_last()
+{
+    tab.nb_symboles --; 
+}
+
+int is_init(char* s) {
+    int addr = get_addr(s);
+    
+    return tab.table[addr].init;
 }

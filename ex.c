@@ -1,10 +1,6 @@
 int main()
 {
-    int a; 
-    int b = 1; 
-    int d, c = 2; 
-    int k = b + 3 ;
-    int b;
-    return d;
+    int a;
+    a = 4;
+    int b = a;
 }
-
