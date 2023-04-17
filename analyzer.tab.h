@@ -51,9 +51,9 @@ extern int yydebug;
   {
     tID = 258,
     tNB = 259,
-    tIF = 260,
-    tELSE = 261,
-    tWHILE = 262,
+    tWHILE = 260,
+    tIF = 261,
+    tELSE = 262,
     tPRINT = 263,
     tRETURN = 264,
     tINT = 265,
@@ -90,8 +90,9 @@ union YYSTYPE
  
     char* s;
     int i; 
+    struct {int begin; int while_line; int end;} while_info;
 
-#line 95 "analyzer.tab.h"
+#line 96 "analyzer.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -109,6 +110,6 @@ int yyparse (void);
   int yylex (void);
   void yyerror (const char *);
 
-#line 113 "analyzer.tab.h"
+#line 114 "analyzer.tab.h"
 
 #endif /* !YY_YY_ANALYZER_TAB_H_INCLUDED  */

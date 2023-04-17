@@ -5,7 +5,7 @@
 static int current_line = 0; 
 
 
-char op_to_str[10][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV"};
+char op_to_str[10][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "JMP", "JMF"};
 
 //tab_asm[x][4] is equal to the number of parameters of a line (MUL 1 2 3 => tab_asm[x][4] = 3)
 int tab_asm[1024][5]; 
@@ -34,12 +34,21 @@ void add_asm(int op, int p1, int p2, int p3, int nbp)
 
     current_line ++;
 }
-void update_asm(int i, int op, int p1, int p2, int p3, int nbp)
+
+/*void update_asm(int i1, int op, int p1, int p2, int p3, int nbp)
 {
     tab_asm[i][0] = op;
     tab_asm[i][1] = p1; 
     tab_asm[i][2] = p2; 
     tab_asm[i][3] = p3; 
     tab_asm[i][4] = nbp; 
-}  
+}*/
 
+void update_asm(int line, int index, int p)
+{
+    tab_asm[line][index] = p;
+}
+
+int asm_current() {
+    return current_line;
+}

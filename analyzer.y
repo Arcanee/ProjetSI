@@ -14,11 +14,13 @@
 %union { 
     char* s;
     int i; 
+    struct {int begin; int while_line; int end;} while_info;
 }
 
 %token <s> tID
 %token <i> tNB
-%token tIF tELSE tWHILE tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA tERROR
+%token <while_info> tWHILE
+%token tIF tELSE tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA tERROR
 %left tADD tSUB
 %left tMUL tDIV
 
@@ -132,7 +134,12 @@ op:
   ;
 
 loop:
-    tWHILE tLPAR expr tRPAR block
+    tWHILE {$1.begin = asm_current();} 
+    tLPAR expr { $1.while_line = asm_current();
+                add_asm(7, NIL, get_last(), NIL, 2);} 
+    tRPAR block {add_asm(6, $1.begin, NIL, NIL, 1);
+                $1.end = asm_current();
+                update_asm($1.while_line, 1, $1.end);}
   ;
 
 /* Le print de l'exemple étant "print(a), j'ai opté pour un print python-like" */
