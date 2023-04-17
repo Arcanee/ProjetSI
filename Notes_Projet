@@ -8,3 +8,6 @@ expr arith:
     1 sol : On a E -> E * E ; on part du principe que E est forcément une tmp
 
 Suppression de "ids" pour simplifier le process des affectations et expressions
+
+while:
+    conditions ? CMP ?

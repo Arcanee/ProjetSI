@@ -1,9 +1,20 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "tabSymbole.h"
+#include "sym_tab.h"
 #include "asm_tab.h"
-#define NIL -1
+
+#define NIL -1 //Refers to a negligible parameter in the asm instruction table.
+
+#define ASM_AFF 0
+#define ASM_COP 1
+#define ASM_ADD 2
+#define ASM_SUB 3
+#define ASM_MUL 4
+#define ASM_DIV 5
+#define ASM_JMP 6
+#define ASM_JMF 7
+#define ASM_NIL 8
 %}
 
 %code provides {
@@ -14,23 +25,21 @@
 %union { 
     char* s;
     int i; 
-    struct {int begin; int while_line; int end;} while_info;
+    struct {int begin;
+            int jmf_line;
+            int end; } while_info;
 }
 
 %token <s> tID
 %token <i> tNB
 %token <while_info> tWHILE
-%token tIF tELSE tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA tERROR
+%token tIF tELSE tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
 %left tADD tSUB
 %left tMUL tDIV
 
 
 %%
 
-/*  Départ 
-    Les noms des noms terminaux sont assez explicites pour tracer un
-    chemin de construction et comprendre ce qu'il se passe.
-*/
 functions:
     %empty
   | function functions
@@ -61,7 +70,7 @@ params_full:
   ;
 
 block:
-  tLBRACE  {inc_depth();} instructions tRBRACE {removeSym(); dec_depth();}
+  tLBRACE  {sym_inc_depth();} instructions tRBRACE {sym_clear(); sym_dec_depth();}
   ;
 
 instructions:
@@ -90,34 +99,34 @@ condins:
 expr:
     term
   | tNOT expr
-  | term tADD expr {add_asm(2, get_next_last(), get_next_last(), get_last(), 3); 
-                  supp_last();}
-  | term tSUB expr {add_asm(3, get_next_last(), get_next_last(), get_last(), 3); 
-                  supp_last();}
-  | term tMUL expr {add_asm(4, get_next_last(), get_next_last(), get_last(), 3); 
-                  supp_last();}
-  | term tDIV expr {add_asm(5, get_next_last(), get_next_last(), get_last(), 3); 
-                  supp_last();}
-  | term op expr {add_asm(0, get_next_last(), get_next_last(), get_last(), 3); 
-                  supp_last();}
+  | term tADD expr {asm_add(ASM_ADD, sym_next_last(), sym_next_last(), sym_last(), 3); 
+                  sym_remove_last();}
+  | term tSUB expr {asm_add(ASM_SUB, sym_next_last(), sym_next_last(), sym_last(), 3); 
+                  sym_remove_last();}
+  | term tMUL expr {asm_add(ASM_MUL, sym_next_last(), sym_next_last(), sym_last(), 3); 
+                  sym_remove_last();}
+  | term tDIV expr {asm_add(ASM_DIV, sym_next_last(), sym_next_last(), sym_last(), 3); 
+                  sym_remove_last();}
+  | term op expr {asm_add(ASM_NIL, sym_next_last(), sym_next_last(), sym_last(), 3); 
+                  sym_remove_last();}
   | tLPAR expr tRPAR
   | tLPAR expr tRPAR op expr
   | tADD expr
-  | tSUB expr {addSym("_"); 
-               add_asm(0, get_last(), 0, NIL, 2);
-               add_asm(3, get_next_last(), get_last(), get_next_last(), 3);
-               supp_last(); }
+  | tSUB expr {sym_add("_"); 
+               asm_add(ASM_AFF, sym_last(), 0, NIL, 2);
+               asm_add(ASM_SUB, sym_next_last(), sym_last(), sym_next_last(), 3);
+               sym_remove_last(); }
   ;
 
 term:
-    tID {addSym("_");
-          if (is_init($1))
-            {add_asm(1, get_last(), get_addr($1), NIL, 2);}
+    tID {sym_add("_");
+          if (sym_is_init($1))
+            {asm_add(ASM_COP, sym_last(), sym_get_addr($1), NIL, 2);}
           else
-            {printf("Var not initialized\n"); exit(-1);}
+            {printf("error: uninitialized variable\n\n"); exit(-1);}
         }
-  | tNB {addSym("_"); 
-         add_asm(0, get_last(), $1, NIL, 2); }
+  | tNB {sym_add("_"); 
+         asm_add(ASM_AFF, sym_last(), $1, NIL, 2); }
   | funccall
   ;
 
@@ -135,34 +144,34 @@ op:
 
 loop:
     tWHILE {$1.begin = asm_current();} 
-    tLPAR expr { $1.while_line = asm_current();
-                add_asm(7, NIL, get_last(), NIL, 2);} 
-    tRPAR block {add_asm(6, $1.begin, NIL, NIL, 1);
+    tLPAR expr { $1.jmf_line = asm_current();
+                asm_add(ASM_JMF, NIL, sym_last(), NIL, 2);} 
+    tRPAR block {asm_add(ASM_JMP, $1.begin, NIL, NIL, 1);
                 $1.end = asm_current();
-                update_asm($1.while_line, 1, $1.end);}
+                asm_update($1.jmf_line, 1, $1.end);}
   ;
 
-/* Le print de l'exemple étant "print(a), j'ai opté pour un print python-like" */
 print:
     tPRINT tLPAR expr tRPAR
 
 assign:
-    tID tASSIGN expr {set_sym_init(get_addr($1)); 
-                     add_asm(1, get_addr($1), get_last(), NIL, 2);  
-                     supp_last();} 
+    tID tASSIGN expr {sym_set_init($1); 
+                     asm_add(ASM_COP, sym_get_addr($1), sym_last(), NIL, 2);  
+                     sym_remove_last();} 
   ;
 
 declar:
-    tINT tID {addSym($2);}
-  | tINT tID {addSym($2);} tASSIGN {set_sym_init(get_addr($2));} expr {add_asm(1, get_addr($2), get_last(), NIL, 2); 
-                                                                        supp_last();}
+    tINT tID {sym_add($2);}
+  | tINT tID {sym_add($2);} tASSIGN {sym_set_init($2);} expr {asm_add(ASM_COP, sym_get_addr($2), sym_last(), NIL, 2); 
+                                                                        sym_remove_last();}
   ;
 
 /*ids:
     tID 
-  | tID {addSym($1); printTab();} tCOMMA ids 
+  | tID {sym_add($1); printTab();} tCOMMA ids 
   ;
 */
+
 funcreturn:
     tRETURN expr
   ;
@@ -193,7 +202,8 @@ void yyerror(const char *msg) {
 }
 
 int main(void) {
-  initTab();
+  printf("\n[START OF PROGRAM]\n\n");
+  sym_init_tab();
   yyparse();
-  print_asm_tab();
+  asm_print_tab();
 }

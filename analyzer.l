@@ -52,6 +52,6 @@
 
 [ \t\n]         {} //Ignorer les espaces et les retours a la ligne
 
-.               {return tERROR;} //Si aucun autre pattern n a match
+.               {printf("error: syntax error\n\n"); exit(-1);} //Si aucun autre pattern n a match
 
 %%
