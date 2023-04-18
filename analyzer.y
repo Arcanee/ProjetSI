@@ -12,9 +12,11 @@
 #define ASM_SUB 3
 #define ASM_MUL 4
 #define ASM_DIV 5
-#define ASM_JMP 6
-#define ASM_JMF 7
-#define ASM_NIL 8
+#define ASM_B 6
+#define ASM_NIL 7
+#define ASM_CMP 8
+#define ASM_BEQ 9
+#define ASM_BNE 10
 %}
 
 %code provides {
@@ -27,13 +29,16 @@
     int i; 
     struct {int begin;
             int jmf_line;
-            int end; } while_info;
+            int end; } branch_info;
+    int op;
 }
 
 %token <s> tID
 %token <i> tNB
-%token <while_info> tWHILE
-%token tIF tELSE tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
+%token <branch_info> tIF tWHILE tELSE
+%type <op> condition
+
+%token tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
 %left tADD tSUB
 %left tMUL tDIV
 
@@ -91,26 +96,34 @@ instruction:
   ;
 
 condins:
-    tIF tLPAR expr tRPAR block
-  | tIF tLPAR expr tRPAR block tELSE block
+    tIF tLPAR condition {$1.jmf_line = asm_current();
+                    asm_add($3, NIL, NIL, NIL, 1);}  
+    tRPAR block {$1.end = asm_current();
+                  asm_update($1.jmf_line, 1, $1.end+1);} 
+
+  | tIF tLPAR condition tRPAR {$1.jmf_line = asm_current(); 
+                                asm_add($3, NIL, NIL, NIL, 1);} 
+    block {$1.end = asm_current(); 
+            asm_update($1.jmf_line, 1, $1.end);}
+    tELSE {asm_add(ASM_B, NIL, NIL, NIL, 1); 
+            $1.end = asm_current(); 
+            asm_update($1.jmf_line, 1, $1.end);} //update of the if branch 
+    block {$8.end = asm_current(); 
+            asm_update($1.end-1, 1, $8.end);} //update of the else branch 
   ;
 
 
 expr:
     term
-  | tNOT expr
-  | term tADD expr {asm_add(ASM_ADD, sym_next_last(), sym_next_last(), sym_last(), 3); 
+  | expr tADD expr {asm_add(ASM_ADD, sym_next_last(), sym_next_last(), sym_last(), 3); 
                   sym_remove_last();}
-  | term tSUB expr {asm_add(ASM_SUB, sym_next_last(), sym_next_last(), sym_last(), 3); 
+  | expr tSUB expr {asm_add(ASM_SUB, sym_next_last(), sym_next_last(), sym_last(), 3); 
                   sym_remove_last();}
-  | term tMUL expr {asm_add(ASM_MUL, sym_next_last(), sym_next_last(), sym_last(), 3); 
+  | expr tMUL expr {asm_add(ASM_MUL, sym_next_last(), sym_next_last(), sym_last(), 3); 
                   sym_remove_last();}
-  | term tDIV expr {asm_add(ASM_DIV, sym_next_last(), sym_next_last(), sym_last(), 3); 
-                  sym_remove_last();}
-  | term op expr {asm_add(ASM_NIL, sym_next_last(), sym_next_last(), sym_last(), 3); 
+  | expr tDIV expr {asm_add(ASM_DIV, sym_next_last(), sym_next_last(), sym_last(), 3); 
                   sym_remove_last();}
   | tLPAR expr tRPAR
-  | tLPAR expr tRPAR op expr
   | tADD expr
   | tSUB expr {sym_add("_"); 
                asm_add(ASM_AFF, sym_last(), 0, NIL, 2);
@@ -130,23 +143,35 @@ term:
   | funccall
   ;
 
-op:
-    tASSIGN
-  | tLT
-  | tLE
-  | tGT
-  | tGE
-  | tEQ
-  | tNEQ
-  | tAND
-  | tOR
+condition:
+    expr {sym_add("_"); 
+         asm_add(ASM_AFF, sym_last(), 0, NIL, 2);
+         asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2);
+         sym_remove_last();
+         $$ = ASM_BEQ;} // (expr) <=> (expr != 0)
+         
+  | tNOT expr {sym_add("_"); 
+         asm_add(ASM_AFF, sym_last(), 0, NIL, 2);
+         asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2);
+         sym_remove_last();
+         $$ = ASM_BNE;} // (!expr) <=> (expr == 0)
+
+  /*| term tASSIGN expr 
+  | term tLT expr
+  | term tLE expr
+  | term tGT expr
+  | term tGE expr
+  | term tOR expr
+  | term tAND expr*/
+  | expr tEQ expr {asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2); $$ = ASM_BNE;}
+  | term tNEQ expr {asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2); $$ = ASM_BEQ;}
   ;
 
 loop:
     tWHILE {$1.begin = asm_current();} 
-    tLPAR expr { $1.jmf_line = asm_current();
-                asm_add(ASM_JMF, NIL, sym_last(), NIL, 2);} 
-    tRPAR block {asm_add(ASM_JMP, $1.begin, NIL, NIL, 1);
+    tLPAR condition { $1.jmf_line = asm_current();
+                asm_add($4, NIL, NIL, NIL, 1);} 
+    tRPAR block {asm_add(ASM_B, $1.begin, NIL, NIL, 1);
                 $1.end = asm_current();
                 asm_update($1.jmf_line, 1, $1.end);}
   ;
@@ -202,7 +227,7 @@ void yyerror(const char *msg) {
 }
 
 int main(void) {
-  printf("\n[START OF PROGRAM]\n\n");
+  printf("\n0 - [START OF PROGRAM]\n\n");
   sym_init_tab();
   yyparse();
   asm_print_tab();

@@ -11,3 +11,22 @@ Suppression de "ids" pour simplifier le process des affectations et expressions
 
 while:
     conditions ? CMP ?
+
+condition : 
+
+expr tEQ expr {asm_add(ASM_CMP, last, next_last,...); $$ = ASM_BNQ;}
+expr tNE expr {asm_add(ASM_CMP, last, next_last,...); $$ = ASM_BEQ}
+...
+
+condins : 
+tIF condition {asm_add($2,... )}
+
+------------------------------------------
+int a = a || b  => ID ASSIGN expr 
+=> expr => ID op ID 
+
+while (a || b) => WHILE RPAR condition LPAR 
+=> cond => ID op ID {...}
+
+if (a == b == c)
+

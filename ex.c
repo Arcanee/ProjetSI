@@ -5,10 +5,22 @@
 int main()
 {
     int a = 5;
-    while(a+2)
+    if (a == 5)
     {
-        int b = 6;
+        a = 10;
     }
 
-    int c = a + 2;
+    else
+    {
+        if (a == 2)
+        {
+            a = 1;
+        }
+
+        else
+        {
+            a = 0;
+        }
+    }
 }
+

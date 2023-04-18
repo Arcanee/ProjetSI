@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int current_line = 0;
+static int current_line = 1;
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-char op_to_str[10][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "JMP", "JMF", "NIL"};
+char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE"};
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.
 int tab_asm[1024][5];
@@ -23,9 +23,9 @@ int tab_asm[1024][5];
 */
 void asm_print_tab()
 {
-    for (int i = 0; i< current_line; i++)
+    for (int i = 1; i< current_line; i++)
     {
-        printf("%s ", op_to_str[tab_asm[i][0]]);
+        printf("%d - %s ", i, op_to_str[tab_asm[i][0]]);
 
         for (int k = 1; k <= tab_asm[i][4]; k++)
         {
@@ -34,7 +34,7 @@ void asm_print_tab()
         printf("\n"); 
     }
 
-    printf("\n[END OF PROGRAM]\n\n");
+    printf("\n%d - [END OF PROGRAM]\n\n", current_line);
 }
 
 
