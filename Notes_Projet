@@ -9,17 +9,7 @@ expr arith:
 
 Suppression de "ids" pour simplifier le process des affectations et expressions
 
-while:
-    conditions ? CMP ?
-
-condition : 
-
-expr tEQ expr {asm_add(ASM_CMP, last, next_last,...); $$ = ASM_BNQ;}
-expr tNE expr {asm_add(ASM_CMP, last, next_last,...); $$ = ASM_BEQ}
-...
-
-condins : 
-tIF condition {asm_add($2,... )}
+en cas d'erreur : afficher les instructions
 
 ------------------------------------------
 int a = a || b  => ID ASSIGN expr 
@@ -29,4 +19,22 @@ while (a || b) => WHILE RPAR condition LPAR
 => cond => ID op ID {...}
 
 if (a == b == c)
+a 0 
+b 1 
+c 2 
 
+
+if (a == b or b == c)
+
+cmp 0 1 
+beq debut block 
+cmp 1 2 
+bne fin block  
+
+
+if (a == b and b == c)
+
+cmp 0 1
+bne fin blovk 
+cmp 1 2 
+bne fin block  

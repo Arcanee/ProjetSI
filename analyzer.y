@@ -37,6 +37,8 @@
 %token <i> tNB
 %token <branch_info> tIF tWHILE tELSE
 %type <op> condition
+%type <branch_info> ifheader
+
 
 %token tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
 %left tADD tSUB
@@ -75,7 +77,7 @@ params_full:
   ;
 
 block:
-  tLBRACE  {sym_inc_depth();} instructions tRBRACE {sym_clear(); sym_dec_depth();}
+  tLBRACE  {sym_inc_depth();} instructions tRBRACE {sym_clear();}
   ;
 
 instructions:
@@ -95,21 +97,22 @@ instruction:
   | tSEMI
   ;
 
-condins:
-    tIF tLPAR condition {$1.jmf_line = asm_current();
-                    asm_add($3, NIL, NIL, NIL, 1);}  
-    tRPAR block {$1.end = asm_current();
-                  asm_update($1.jmf_line, 1, $1.end+1);} 
+ifheader : tIF tLPAR condition tRPAR  {$1.jmf_line = asm_current()-1;printf("1");}
+           block{$1.end = asm_current();
+                  $$.end = $1.end;
+                  $$.jmf_line = $1.jmf_line;
+                  asm_update($1.jmf_line, 1, $1.end);} ;
 
-  | tIF tLPAR condition tRPAR {$1.jmf_line = asm_current(); 
-                                asm_add($3, NIL, NIL, NIL, 1);} 
-    block {$1.end = asm_current(); 
-            asm_update($1.jmf_line, 1, $1.end);}
-    tELSE {asm_add(ASM_B, NIL, NIL, NIL, 1); 
+condins:
+     
+    ifheader
+  | ifheader tELSE 
+            {asm_add(ASM_B, NIL, NIL, NIL, 1); 
             $1.end = asm_current(); 
-            asm_update($1.jmf_line, 1, $1.end);} //update of the if branch 
-    block {$8.end = asm_current(); 
-            asm_update($1.end-1, 1, $8.end);} //update of the else branch 
+            asm_update($1.jmf_line, 1, $1.end);} 
+            //update of the if branch 
+    block {$2.end = asm_current(); 
+            asm_update($1.end-1, 1, $2.end);} //update of the else branch 
   ;
 
 
@@ -163,8 +166,8 @@ condition:
   | term tGE expr
   | term tOR expr
   | term tAND expr*/
-  | expr tEQ expr {asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2); $$ = ASM_BNE;}
-  | term tNEQ expr {asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2); $$ = ASM_BEQ;}
+  | expr tEQ expr {asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2); asm_add(ASM_BNE, NIL, NIL, NIL, 1); }
+  | term tNEQ expr {asm_add(ASM_CMP, sym_next_last(), sym_last(), NIL, 2);asm_add(ASM_BEQ, NIL, NIL, NIL, 1); }
   ;
 
 loop:
