@@ -282,7 +282,7 @@ int sym_get_addr(char* s)
 
         if (addr ==  -1)
         {
-            printf("error: %s unknown variable\n\n", s); 
+            printf("error: unknown variable %s\n\n", s); 
             exit(-1); 
         }
 

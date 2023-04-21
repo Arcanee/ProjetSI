@@ -11,6 +11,8 @@ Suppression de "ids" pour simplifier le process des affectations et expressions
 
 en cas d'erreur : afficher les instructions
 
+verif nb var tmp si a*(b+c*(d+...))
+
 ------------------------------------------
 int a = a || b  => ID ASSIGN expr 
 => expr => ID op ID 

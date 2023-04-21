@@ -6,8 +6,8 @@ analyzer.tab.h analyzer.tab.c: analyzer.y
 lex.yy.c: analyzer.l analyzer.tab.h
 	flex analyzer.l
 
-analyzer: lex.yy.c analyzer.tab.c analyzer.tab.h sym_tab.c sym_tab.h asm_tab.c asm_tab.h
-	gcc -o analyzer analyzer.tab.c lex.yy.c sym_tab.c asm_tab.c
+analyzer: lex.yy.c analyzer.tab.c analyzer.tab.h sym_tab.c sym_tab.h asm_tab.c asm_tab.h fun_tab.h fun_tab.c
+	gcc -o analyzer analyzer.tab.c lex.yy.c sym_tab.c asm_tab.c fun_tab.c
 
 clean: analyzer analyzer.tab.h analyzer.tab.c lex.yy.c analyzer.output
 	rm analyzer analyzer.tab.h analyzer.tab.c lex.yy.c analyzer.output

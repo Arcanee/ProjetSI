@@ -43,7 +43,7 @@ void asm_add(int op, int p1, int p2, int p3, int nbp);
  * 
  * @params
  * line : number of the instruction to update,
- * index : number of the parameter to update,
+ * index : index of the parameter to update,
  * value : new value.
 */
 void asm_update(int line, int index, int value); 

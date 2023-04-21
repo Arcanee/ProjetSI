@@ -6,10 +6,10 @@
 static int current_line = 1;
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE"};
+static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE"};
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.
-int tab_asm[1024][5];
+static int tab_asm[1024][5];
 
 
 
@@ -50,13 +50,22 @@ void asm_print_tab()
 */
 void asm_add(int op, int p1, int p2, int p3, int nbp)
 { 
-    tab_asm[current_line][0] = op;
-    tab_asm[current_line][1] = p1; 
-    tab_asm[current_line][2] = p2; 
-    tab_asm[current_line][3] = p3; 
-    tab_asm[current_line][4] = nbp;
+    if (current_line == 1024)
+    {
+        printf("error: too many ASM instructions (max is 1024)\n\n");
+        exit(-1);
+    }
 
-    current_line ++;
+    else
+    {
+        tab_asm[current_line][0] = op;
+        tab_asm[current_line][1] = p1; 
+        tab_asm[current_line][2] = p2; 
+        tab_asm[current_line][3] = p3; 
+        tab_asm[current_line][4] = nbp;
+
+        current_line ++;
+    }
 }
 
 
@@ -65,7 +74,7 @@ void asm_add(int op, int p1, int p2, int p3, int nbp)
  * 
  * @params
  * line : number of the instruction to update,
- * index : number of the parameter to update,
+ * index : index of the parameter to update,
  * value : new value.
 */
 void asm_update(int line, int index, int value)

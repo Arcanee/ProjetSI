@@ -1,7 +1,7 @@
 #ifndef SYM_TAB_H
 #define SYM_TAB_H
 
-#define MAXSIZE 16
+#define SYM_MAXSIZE 16
 
 
 /**
@@ -26,7 +26,7 @@
  * depth : level of depth (in terms of blocks) in the source code.
 */
 struct Symbol {
-    char name[MAXSIZE];
+    char name[SYM_MAXSIZE];
     int init;
     int depth;
 };

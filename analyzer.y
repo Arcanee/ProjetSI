@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "sym_tab.h"
 #include "asm_tab.h"
+#include "fun_tab.h"
 
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
@@ -53,7 +54,7 @@ functions:
   ;
 
 function:
-    type tID tLPAR params tRPAR block
+    type tID tLPAR params tRPAR {fun_add($2, asm_current());} block
   ;
 
 type:
@@ -97,14 +98,15 @@ instruction:
   | tSEMI
   ;
 
-ifheader : tIF tLPAR condition tRPAR  {$1.jmf_line = asm_current()-1;printf("1");}
-           block{$1.end = asm_current();
-                  $$.end = $1.end;
-                  $$.jmf_line = $1.jmf_line;
-                  asm_update($1.jmf_line, 1, $1.end);} ;
+ifheader: 
+  tIF tLPAR condition tRPAR  {$1.jmf_line = asm_current()-1;}
+  block {$1.end = asm_current();
+        $$.end = $1.end;
+        $$.jmf_line = $1.jmf_line;
+        asm_update($1.jmf_line, 1, $1.end);}
+  ;
 
 condins:
-     
     ifheader
   | ifheader tELSE 
             {asm_add(ASM_B, NIL, NIL, NIL, 1); 
@@ -230,8 +232,16 @@ void yyerror(const char *msg) {
 }
 
 int main(void) {
+
+  asm_add(ASM_B, NIL, NIL, NIL, 1);
+
   printf("\n0 - [START OF PROGRAM]\n\n");
+
   sym_init_tab();
   yyparse();
+
+  asm_update(1, 1, fun_get_addr("main"));
+
   asm_print_tab();
+  fun_print_tab();
 }
