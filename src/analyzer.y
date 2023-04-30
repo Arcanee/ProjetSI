@@ -1,9 +1,9 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "sym_tab.h"
-#include "asm_tab.h"
-#include "fun_tab.h"
+#include "../lib/include/sym_tab.h"
+#include "../lib/include/asm_tab.h"
+#include "../lib/include/fun_tab.h"
 
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
@@ -235,13 +235,12 @@ int main(void) {
 
   asm_add(ASM_B, NIL, NIL, NIL, 1);
 
-  printf("\n0 - [START OF PROGRAM]\n\n");
+  printf("-1 - [START OF PROGRAM]\n");
 
   sym_init_tab();
   yyparse();
 
-  asm_update(1, 1, fun_get_addr("main"));
+  asm_update(0, 1, fun_get_addr("main"));
 
   asm_print_tab();
-  fun_print_tab();
 }

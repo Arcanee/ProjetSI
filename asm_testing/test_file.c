@@ -7,7 +7,9 @@
 int main() 
 {
     int a = 1;
-    int b = 4;
-    int c = b + a/2;
+    if (a != 4) {
+        int b = 2;
+    }
+    return 0;
 }
 

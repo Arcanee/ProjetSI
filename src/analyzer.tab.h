@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,8 +31,9 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
+/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
+   especially those whose name start with YY_ or yy_.  They are
+   private implementation details that can be changed or removed.  */
 
 #ifndef YY_YY_ANALYZER_TAB_H_INCLUDED
 # define YY_YY_ANALYZER_TAB_H_INCLUDED
@@ -44,41 +45,46 @@
 extern int yydebug;
 #endif
 
-/* Token type.  */
+/* Token kinds.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    tID = 258,
-    tNB = 259,
-    tIF = 260,
-    tWHILE = 261,
-    tELSE = 262,
-    tPRINT = 263,
-    tRETURN = 264,
-    tINT = 265,
-    tVOID = 266,
-    tLT = 267,
-    tLE = 268,
-    tGT = 269,
-    tGE = 270,
-    tEQ = 271,
-    tNEQ = 272,
-    tASSIGN = 273,
-    tADD = 274,
-    tSUB = 275,
-    tDIV = 276,
-    tMUL = 277,
-    tAND = 278,
-    tOR = 279,
-    tNOT = 280,
-    tLBRACE = 281,
-    tRBRACE = 282,
-    tLPAR = 283,
-    tRPAR = 284,
-    tSEMI = 285,
-    tCOMMA = 286
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    tID = 258,                     /* tID  */
+    tNB = 259,                     /* tNB  */
+    tIF = 260,                     /* tIF  */
+    tWHILE = 261,                  /* tWHILE  */
+    tELSE = 262,                   /* tELSE  */
+    tPRINT = 263,                  /* tPRINT  */
+    tRETURN = 264,                 /* tRETURN  */
+    tINT = 265,                    /* tINT  */
+    tVOID = 266,                   /* tVOID  */
+    tLT = 267,                     /* tLT  */
+    tLE = 268,                     /* tLE  */
+    tGT = 269,                     /* tGT  */
+    tGE = 270,                     /* tGE  */
+    tEQ = 271,                     /* tEQ  */
+    tNEQ = 272,                    /* tNEQ  */
+    tASSIGN = 273,                 /* tASSIGN  */
+    tADD = 274,                    /* tADD  */
+    tSUB = 275,                    /* tSUB  */
+    tDIV = 276,                    /* tDIV  */
+    tMUL = 277,                    /* tMUL  */
+    tAND = 278,                    /* tAND  */
+    tOR = 279,                     /* tOR  */
+    tNOT = 280,                    /* tNOT  */
+    tLBRACE = 281,                 /* tLBRACE  */
+    tRBRACE = 282,                 /* tRBRACE  */
+    tLPAR = 283,                   /* tLPAR  */
+    tRPAR = 284,                   /* tRPAR  */
+    tSEMI = 285,                   /* tSEMI  */
+    tCOMMA = 286                   /* tCOMMA  */
   };
+  typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
@@ -94,7 +100,7 @@ union YYSTYPE
             int end; } branch_info;
     int op;
 
-#line 98 "analyzer.tab.h"
+#line 104 "analyzer.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -105,13 +111,15 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
+
 int yyparse (void);
+
 /* "%code provides" blocks.  */
 #line 23 "analyzer.y"
 
   int yylex (void);
   void yyerror (const char *);
 
-#line 116 "analyzer.tab.h"
+#line 124 "analyzer.tab.h"
 
 #endif /* !YY_YY_ANALYZER_TAB_H_INCLUDED  */

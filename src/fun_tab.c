@@ -1,4 +1,4 @@
-#include "fun_tab.h"
+#include "../lib/include/fun_tab.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

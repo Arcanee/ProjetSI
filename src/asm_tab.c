@@ -1,9 +1,9 @@
-#include "asm_tab.h"
+#include "../lib/include/asm_tab.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-static int current_line = 1;
+static int current_line = 0;
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
 static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE"};
@@ -23,7 +23,7 @@ static int tab_asm[1024][5];
 */
 void asm_print_tab()
 {
-    for (int i = 1; i< current_line; i++)
+    for (int i = 0; i < current_line; i++)
     {
         printf("%d - %s ", i, op_to_str[tab_asm[i][0]]);
 
@@ -34,7 +34,7 @@ void asm_print_tab()
         printf("\n"); 
     }
 
-    printf("\n%d - [END OF PROGRAM]\n\n", current_line);
+    printf("%d - [END OF PROGRAM]", current_line);
 }
 
 

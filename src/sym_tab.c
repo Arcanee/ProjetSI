@@ -1,4 +1,4 @@
-#include "sym_tab.h"
+#include "../lib/include/sym_tab.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
