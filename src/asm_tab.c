@@ -8,13 +8,28 @@ static int push_value = -1;
 
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", "PSH", "POP", "BF"};
+static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", "PSH", "POP", "BF", "STR", "LDR"};
 /*
-INIT VAR a : AFF Mx V + COP Ma Mx => AFF Rx V + STR Rx Ma
+INIT VAR a=V : 
+    {add_sym} + AFF last V
+    COP a last 
+
+    =>  {add_sym} + AFF Rx V + STR Rx last
+        LDR Rx last + STR Rx a + {remove_last}
+
 ADDITION a=a+b : 
-    COP Mx Ma + COP My Mb + ADD Mx Mx My + COP Ma Mx (a->tmp, b->tmp, add->tmp, res->a)
-    => LDR Rx Ma + LDR Ry Mb + ADD Rx Rx Ry + STR Rx Ma (a->reg, b->reg, add->reg, res->mem)
-    => (LDR Rx Ma + STR Rx Mx) + (LDR Ry Mb + STR Ry My) + (ADD Rx Rx Ry + STR Rx Mx) + (LDR Rx Mx + STR Rx Ma) /// (a->reg->tmp, b->reg->tmp, add_reg->tmp, tmp->reg->a) 
+    {add_sym} + COP last a
+    {add_sym} + COP last b
+    ADD next_last next_last last + {remove_last}
+    COP a M_last + {remove_last}
+
+    =>  {add_sym} + LDR Rx a + STR Rx last
+        {add_sym} + LDR Ry b + STR Ry last
+        LDR Rx last + LDR Ry next_last + ADD Rx Rx Ry + STR Rx next_last + {remove_last}
+        LDR Rx last + STR Rx a + {remove_last}
+
+    expr, term, condition, assign, declar, funcreturn
+    remove dans condition !!
 */
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.
