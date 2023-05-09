@@ -4,9 +4,18 @@
 #include <string.h>
 
 static int current_line = 0;
+static int push_value = -1;
+
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE"};
+static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", "PSH", "POP", "BF"};
+/*
+INIT VAR a : AFF Mx V + COP Ma Mx => AFF Rx V + STR Rx Ma
+ADDITION a=a+b : 
+    COP Mx Ma + COP My Mb + ADD Mx Mx My + COP Ma Mx (a->tmp, b->tmp, add->tmp, res->a)
+    => LDR Rx Ma + LDR Ry Mb + ADD Rx Rx Ry + STR Rx Ma (a->reg, b->reg, add->reg, res->mem)
+    => (LDR Rx Ma + STR Rx Mx) + (LDR Ry Mb + STR Ry My) + (ADD Rx Rx Ry + STR Rx Mx) + (LDR Rx Mx + STR Rx Ma) /// (a->reg->tmp, b->reg->tmp, add_reg->tmp, tmp->reg->a) 
+*/
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.
 static int tab_asm[1024][5];
@@ -89,4 +98,25 @@ void asm_update(int line, int index, int value)
 int asm_current()
 {
     return current_line;
+}
+
+
+/**
+ * Sets the value to use for the next PUSH instruction.
+ *
+ * @params
+ * value : offset wanted for the PUSH.
+*/
+void asm_set_push(int value)
+{
+    push_value = value;
+}
+
+
+/**
+ * Gets the value to use for the next PUSH instruction.
+*/
+int asm_push()
+{
+    return push_value;
 }

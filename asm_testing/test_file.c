@@ -4,12 +4,10 @@
 */
 
 
-int main() 
+int main()
 {
-    int a = 1;
-    if (a != 4) {
-        int b = 2;
-    }
-    return 0;
-}
+    int a = 20;
+    int b = 30;
 
+    a = a + b;
+}

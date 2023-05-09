@@ -22,9 +22,10 @@ static int tab_index = 0;
  *
  * @params
  * s : name of the function,
- * addr : the line at which the fuction begins in the ASM tab
+ * addr : the line at which the fuction begins in the ASM tab,
+ * ret : true if the function is of type non-void, false instead.
 */
-void fun_add(char* s, int addr)
+void fun_add(char* s, int addr, int ret)
 {
     if (tab_index == 10)
     {
@@ -36,6 +37,7 @@ void fun_add(char* s, int addr)
     {
         strcpy(tab_fun[tab_index].name, s);
         tab_fun[tab_index].addr = addr;
+        tab_fun[tab_index].ret = ret;
         tab_index++;
     }
 }
@@ -49,7 +51,7 @@ void fun_print_tab()
     printf("Function table:\n");
     for (int i = 0; i < tab_index; i++)
     {
-        printf("%s - %d ", tab_fun[i].name, tab_fun[i].addr);
+        printf("%s - %d - %d", tab_fun[i].name, tab_fun[i].addr, tab_fun[i].ret);
         printf("\n");
     }
 

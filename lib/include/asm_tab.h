@@ -54,4 +54,19 @@ void asm_update(int line, int index, int value);
 */
 int asm_current();
 
+
+/**
+ * Sets the value to use for the next PUSH instruction.
+ *
+ * @params
+ * value : offset wanted for the PUSH.
+*/
+void asm_set_push(int value);
+
+
+/**
+ * Gets the value to use for the next PUSH instruction.
+*/
+int asm_push();
+
 #endif

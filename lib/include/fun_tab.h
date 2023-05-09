@@ -10,15 +10,17 @@
 
 
 /**
- * A function is a struct, thus we can store an id (string) + an address (int).
+ * A function is a struct, thus we can store its info.
  * 
  * @members
  * name : the name of a function. MAXSIZE is to be changed if needed (see defined macro above),
- * addr : the address at which the function begins.
+ * addr : the address at which the function begins,
+ * ret : boolean that is true if the function is expected to return something (int), false instead (void).
 */
 struct Function {
     char name[FUN_MAXSIZE];
     int addr;
+    int ret;
 };
 
 
@@ -32,9 +34,10 @@ struct Function {
  * Adds a function to the table.
  * @params
  * s : name of the function,
- * addr : the line at which the fuction begins in the ASM tab
+ * addr : the line at which the fuction begins in the ASM tab,
+ * ret : true if the function is of type non-void, false instead.
 */
-void fun_add(char* s, int addr);
+void fun_add(char* s, int addr, int ret);
 
 
 /**

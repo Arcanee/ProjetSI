@@ -184,4 +184,12 @@ int sym_next_last();
 void sym_remove_last();
 
 
+/**
+ * Clears the last symbols added.
+ *
+ * @params
+ * n : number of symbols to remove.
+*/
+void sym_remove_lasts(int n);
+
 #endif

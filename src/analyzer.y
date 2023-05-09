@@ -18,6 +18,10 @@
 #define ASM_CMP 8
 #define ASM_BEQ 9
 #define ASM_BNE 10
+#define ASM_RET 11
+#define ASM_PSH 12
+#define ASM_POP 13
+#define ASM_BF 14
 %}
 
 %code provides {
@@ -32,14 +36,16 @@
             int jmf_line;
             int end; } branch_info;
     int op;
+    int f_type;
 }
 
 %token <s> tID
 %token <i> tNB
 %token <branch_info> tIF tWHILE tELSE
+
 %type <op> condition
 %type <branch_info> ifheader
-
+%type <f_type> type
 
 %token tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
 %left tADD tSUB
@@ -54,12 +60,12 @@ functions:
   ;
 
 function:
-    type tID tLPAR params tRPAR {fun_add($2, asm_current());} block
+    type tID tLPAR {sym_inc_depth(); sym_add("?ADDR"); sym_add("?VAL");} params tRPAR {fun_add($2, asm_current(), $1);} block {asm_add(ASM_RET, 0, NIL, NIL, 1);}
   ;
 
 type:
-    tINT
-  | tVOID
+    tINT {$$ = 1;}
+  | tVOID {$$ = 0;}
   ;
 
 params:
@@ -73,12 +79,12 @@ params_void:
   ;
 
 params_full:
-    type tID
-  | type tID tCOMMA params_full
+    tINT tID {sym_add($2);}
+  | tINT tID tCOMMA {sym_add($2);} params_full
   ;
 
 block:
-  tLBRACE  {sym_inc_depth();} instructions tRBRACE {sym_clear();}
+  tLBRACE  {sym_inc_depth();} instructions tRBRACE {sym_clear(); sym_clear();}
   ;
 
 instructions:
@@ -138,11 +144,7 @@ expr:
 
 term:
     tID {sym_add("_");
-          if (sym_is_init($1))
-            {asm_add(ASM_COP, sym_last(), sym_get_addr($1), NIL, 2);}
-          else
-            {printf("error: uninitialized variable\n\n"); exit(-1);}
-        }
+         asm_add(ASM_COP, sym_last(), sym_get_addr($1), NIL, 2); }
   | tNB {sym_add("_"); 
          asm_add(ASM_AFF, sym_last(), $1, NIL, 2); }
   | funccall
@@ -186,14 +188,14 @@ print:
 
 assign:
     tID tASSIGN expr {sym_set_init($1); 
-                     asm_add(ASM_COP, sym_get_addr($1), sym_last(), NIL, 2);  
-                     sym_remove_last();} 
+                      asm_add(ASM_COP, sym_get_addr($1), sym_last(), NIL, 2);  
+                      sym_remove_last();} 
   ;
 
 declar:
     tINT tID {sym_add($2);}
   | tINT tID {sym_add($2);} tASSIGN {sym_set_init($2);} expr {asm_add(ASM_COP, sym_get_addr($2), sym_last(), NIL, 2); 
-                                                                        sym_remove_last();}
+                                                              sym_remove_last();}
   ;
 
 /*ids:
@@ -203,11 +205,19 @@ declar:
 */
 
 funcreturn:
-    tRETURN expr
+    tRETURN expr {asm_add(ASM_COP, sym_get_addr("?VAL"), sym_last(), NIL, 2);  
+                  sym_remove_last();
+                  asm_add(ASM_RET, 0, NIL, NIL, 1);}
   ;
 
 funccall:
-    tID tLPAR callparams tRPAR
+    tID tLPAR {asm_set_push(sym_last()+1);
+               sym_add("!ADDR"); sym_add("!VAL");} callparams tRPAR {asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
+                                                                     asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
+                                                                     asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
+                                                                     asm_add(ASM_COP, sym_get_addr("!ADDR"), sym_get_addr("!VAL"), NIL, 2);
+                                                                     sym_remove_lasts(sym_last()+1 - asm_push());
+                                                                     sym_add("_");}
   ;
 
 callparams:

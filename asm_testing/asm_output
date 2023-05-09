@@ -1,12 +1,12 @@
 -1 - [START OF PROGRAM]
 0 - B 1 
-1 - AFF 1 1 
-2 - COP 0 1 
-3 - COP 1 0 
-4 - AFF 2 4 
-5 - CMP 1 2 
-6 - BEQ 9 
-7 - AFF 4 2 
-8 - COP 3 4 
-9 - AFF 3 0 
+1 - AFF 3 20 
+2 - COP 2 3 
+3 - AFF 4 30 
+4 - COP 3 4 
+5 - COP 4 2 
+6 - COP 5 3 
+7 - ADD 4 4 5 
+8 - COP 2 4 
+9 - RET 0 
 10 - [END OF PROGRAM]

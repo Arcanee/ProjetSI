@@ -385,3 +385,28 @@ void sym_remove_last()
         exit(-1);
     }
 }
+
+
+
+/**
+ * Clears the last symbols added.
+ *
+ * @params
+ * n : number of symbols to remove.
+*/
+void sym_remove_lasts(int n)
+{
+    if (init)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            tab.nb_symbol--;
+        }
+    }
+    
+    else
+    {
+        printf("error: symbol table has not been initialized\n\n");
+        exit(-1);
+    }
+}
