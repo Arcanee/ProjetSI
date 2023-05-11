@@ -18,6 +18,5 @@ en cas d'erreur : afficher les instructions
 
 TODO:
     - Expr bool restantes
-    - Appel de fonctions ###
-    - Passer en orienté registre
-    - Print
+    - Print ?
+    - Melanger expr et cond ?

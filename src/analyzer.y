@@ -53,6 +53,8 @@
 %left tADD tSUB
 %left tMUL tDIV
 
+%left tOR
+%left tAND
 
 %%
 
@@ -120,9 +122,9 @@ condins:
             {asm_add(ASM_B, NIL, NIL, NIL, 1); 
             $1.end = asm_current(); 
             asm_update($1.jmf_line, 1, $1.end);} 
-            //update of the if branch 
+            //update of the if to go directly in the ELSE block if needed 
     block {$2.end = asm_current(); 
-            asm_update($1.end-1, 1, $2.end);} //update of the else branch 
+            asm_update($1.end-1, 1, $2.end);} //update of the else branch if we skip it
   ;
 
 
@@ -181,9 +183,9 @@ condition:
           asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
           asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
           asm_add(ASM_CMP, 0, 1, NIL, 2);
+          asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
           sym_remove_last();
-          sym_remove_last();
-          $$ = ASM_BEQ;} // (expr) <=> (expr != 0)
+          sym_remove_last();} // (expr) <=> (expr != 0)
          
   | tNOT expr {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
@@ -191,11 +193,11 @@ condition:
                asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                asm_add(ASM_CMP, 0, 1, NIL, 2);
+               asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                sym_remove_last();
-               sym_remove_last();
-               $$ = ASM_BNE;} // (!expr) <=> (expr == 0)
+               sym_remove_last();} // (!expr) <=> (expr == 0)
 
-  /*| term tASSIGN expr 
+  /*
   | term tLT expr
   | term tLE expr
   | term tGT expr
@@ -209,7 +211,7 @@ condition:
                    sym_remove_last();
                    sym_remove_last();}
 
-  | term tNEQ expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
+  | expr tNEQ expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
@@ -219,8 +221,7 @@ condition:
 
 loop:
     tWHILE {$1.begin = asm_current();} 
-    tLPAR condition { $1.jmf_line = asm_current();
-                asm_add($4, NIL, NIL, NIL, 1);} 
+    tLPAR condition { $1.jmf_line = asm_current()-1;} 
     tRPAR block {asm_add(ASM_B, $1.begin, NIL, NIL, 1);
                 $1.end = asm_current();
                 asm_update($1.jmf_line, 1, $1.end);}
@@ -261,7 +262,8 @@ funccall:
                sym_add("!ADDR"); sym_add("!VAL");} callparams tRPAR {asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
                                                                      asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
                                                                      asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
-                                                                     asm_add(ASM_COP, sym_get_addr("!ADDR"), sym_get_addr("!VAL"), NIL, 2);
+                                                                     asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);
+                                                                     asm_add(ASM_STR, 0, sym_get_addr("!ADDR"), NIL, 2);
                                                                      sym_remove_lasts(sym_last()+1 - asm_push());
                                                                      sym_add("_");}
   ;
