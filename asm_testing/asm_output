@@ -1,21 +1,26 @@
 -1 - [START OF PROGRAM]
 0 - B 1 
-1 - AFF 0 8 
+1 - AFF 0 1 
 2 - STR 0 2 
-3 - AFF 0 9 
+3 - AFF 0 1 
 4 - STR 0 3 
 5 - LDR 0 2 
-6 - LDR 1 3 
-7 - ADD 0 0 1 
-8 - STR 0 2 
-9 - AFF 0 4 
-10 - STR 0 3 
-11 - LDR 0 2 
-12 - LDR 1 3 
-13 - ADD 0 0 1 
-14 - STR 0 2 
-15 - LDR 0 2 
-16 - STR 0 1 
-17 - RET 0 
-18 - RET 0 
-19 - [END OF PROGRAM]
+6 - AFF 1 0 
+7 - STR 1 4 
+8 - LDR 1 4 
+9 - CMP 0 1 
+10 - BEQ -1 
+11 - LDR 0 3 
+12 - LDR 19 4 
+13 - CMP 0 1 
+14 - BEQ 19 
+15 - AFF 0 99 
+16 - STR 0 3 
+17 - LDR 0 3 
+18 - STR 0 2 
+19 - AFF 0 55 
+20 - STR 0 3 
+21 - LDR 0 3 
+22 - STR 0 2 
+23 - RET 0 
+24 - [END OF PROGRAM]

@@ -18,5 +18,9 @@ en cas d'erreur : afficher les instructions
 
 TODO:
     - Expr bool restantes
-    - Print ?
-    - Melanger expr et cond ?
+    - Print => Amélioration
+    - Expr bool imbriquées => Amélioration
+    - Verif function return int or void
+
+    - ligne 119 bison : $$ ?
+    - update python

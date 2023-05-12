@@ -24,6 +24,10 @@
 #define ASM_BF 14
 #define ASM_STR 15
 #define ASM_LDR 16
+#define ASM_BN 17
+#define ASM_BNZ 18
+#define ASM_BP 19
+#define ASM_BSP 20
 %}
 
 %code provides {
@@ -35,9 +39,11 @@
     char* s;
     int i; 
     struct {int begin;
-            int jmf_line;
+            int branch_line;
+            int was_and;
+            int and_branch_line;
             int end; } branch_info;
-    int op;
+    int is_and;
     int f_type;
 }
 
@@ -45,7 +51,7 @@
 %token <i> tNB
 %token <branch_info> tIF tWHILE tELSE
 
-%type <op> condition
+%type <is_and> condition
 %type <branch_info> ifheader
 %type <f_type> type
 
@@ -109,11 +115,15 @@ instruction:
   ;
 
 ifheader: 
-  tIF tLPAR condition tRPAR  {$1.jmf_line = asm_current()-1;}
+  tIF tLPAR condition tRPAR  {$1.branch_line = asm_current()-1;
+                              $1.was_and = $3;
+                              $1.and_branch_line = asm_current()-3;}
+                              
   block {$1.end = asm_current();
         $$.end = $1.end;
-        $$.jmf_line = $1.jmf_line;
-        asm_update($1.jmf_line, 1, $1.end);}
+        $$.branch_line = $1.branch_line;
+        asm_update($1.branch_line, 1, $1.end); 
+        if ($3) {asm_update($1.and_branch_line, 1, $1.end);}} //update first compare branch if it was an AND
   ;
 
 condins:
@@ -121,8 +131,9 @@ condins:
   | ifheader tELSE 
             {asm_add(ASM_B, NIL, NIL, NIL, 1); 
             $1.end = asm_current(); 
-            asm_update($1.jmf_line, 1, $1.end);} 
-            //update of the if to go directly in the ELSE block if needed 
+            asm_update($1.branch_line, 1, $1.end); //update of the if to go directly in the ELSE block if needed
+            if ($1.was_and) {asm_update($1.and_branch_line, 1, $1.end);}} 
+
     block {$2.end = asm_current(); 
             asm_update($1.end-1, 1, $2.end);} //update of the else branch if we skip it
   ;
@@ -185,7 +196,8 @@ condition:
           asm_add(ASM_CMP, 0, 1, NIL, 2);
           asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
           sym_remove_last();
-          sym_remove_last();} // (expr) <=> (expr != 0)
+          sym_remove_last(); // (expr) <=> (expr != 0)
+          $$ = 0;}
          
   | tNOT expr {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
@@ -195,36 +207,104 @@ condition:
                asm_add(ASM_CMP, 0, 1, NIL, 2);
                asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                sym_remove_last();
-               sym_remove_last();} // (!expr) <=> (expr == 0)
+               sym_remove_last(); // (!expr) <=> (expr == 0)
+               $$ = 0;}
 
-  /*
-  | term tLT expr
-  | term tLE expr
-  | term tGT expr
-  | term tGE expr
-  | term tOR expr
-  | term tAND expr*/
+  
+  | expr tLT expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
+                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_BP, NIL, NIL, NIL, 1); //0 is considered positive
+                   sym_remove_last();
+                   sym_remove_last();
+                   $$ = 0;}
+
+  | expr tLE expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
+                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_BSP, NIL, NIL, NIL, 1);
+                   sym_remove_last();
+                   sym_remove_last();
+                   $$ = 0;}
+
+  | expr tGT expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
+                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_BNZ, NIL, NIL, NIL, 1);
+                   sym_remove_last();
+                   sym_remove_last();
+                   $$ = 0;}
+
+  | expr tGE expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
+                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_BN, NIL, NIL, NIL, 1);
+                   sym_remove_last();
+                   sym_remove_last();
+                   $$ = 0;}
+
+  | expr tOR expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
+                   sym_add("_");
+                   asm_add(ASM_AFF, 1, 0, NIL, 2);
+                   asm_add(ASM_STR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_BNE, asm_current()+3, NIL, NIL, 1);
+
+                   asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e2 & 0
+                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
+
+                   sym_remove_last(); //remove 0, e2, e1
+                   sym_remove_last();
+                   sym_remove_last();
+                   $$ = 0;}
+
+  | expr tAND expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
+                    sym_add("_");
+                    asm_add(ASM_AFF, 1, 0, NIL, 2);
+                    asm_add(ASM_STR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_CMP, 0, 1, NIL, 2);
+                    asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
+
+                    asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e2 & 0
+                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_CMP, 0, 1, NIL, 2);
+                    asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
+
+                    sym_remove_last(); //remove 0, e2, e1
+                    sym_remove_last();
+                    sym_remove_last();
+                    $$ = 1;}
+
   | expr tEQ expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                    sym_remove_last();
-                   sym_remove_last();}
+                   sym_remove_last();
+                   $$ = 0;}
 
   | expr tNEQ expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
                     sym_remove_last();
-                    sym_remove_last();}
+                    sym_remove_last();
+                    $$ = 0;}
   ;
 
 loop:
     tWHILE {$1.begin = asm_current();} 
-    tLPAR condition { $1.jmf_line = asm_current()-1;} 
+    tLPAR condition { $1.branch_line = asm_current()-1;
+                      $1.and_branch_line = asm_current()-3;}
+
     tRPAR block {asm_add(ASM_B, $1.begin, NIL, NIL, 1);
                 $1.end = asm_current();
-                asm_update($1.jmf_line, 1, $1.end);}
+                asm_update($1.branch_line, 1, $1.end);
+                if ($4) {asm_update($1.and_branch_line, 1, $1.end);}}
   ;
 
 print:

@@ -8,7 +8,8 @@ static int push_value = -1;
 
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-static char op_to_str[20][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", "PSH", "POP", "BF", "STR", "LDR"};
+static char op_to_str[30][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", 
+                                "PSH", "POP", "BF", "STR", "LDR", "BN", "BNZ", "BP", "BSP"};
 /*
 INIT VAR a=V : 
     {add_sym} + AFF last V

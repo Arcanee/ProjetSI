@@ -6,5 +6,8 @@
 
 int main()
 {
-    return 8+9+4;
+    if (1 && 1) {
+        int a = 99;
+    }
+    int b = 55;
 }
