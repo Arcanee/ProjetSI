@@ -3,10 +3,16 @@
 
 */
 
-void f() {return 34;}
+int f() {return 34;}
 
 int main()
 {
-    int a = f();
-    return a;
+    if (f() > 24)
+    {
+        return 34;
+    }
+    else
+    {
+        return 78;
+    }
 }

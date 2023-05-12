@@ -68,13 +68,19 @@ functions:
   | function functions
   ;
 
-function:
-    type tID tLPAR {sym_inc_depth(); sym_add("?ADDR");
-                    sym_add("?VAL");}
+function_params:
+    %empty
+    {sym_inc_depth(); 
+     sym_add("?ADDR");
+     sym_add("?VAL");}
+  ;
 
-    params tRPAR {fun_add($2, asm_current(), $1);} 
-    
-    block {asm_add(ASM_RET, 0, NIL, NIL, 1); sym_clear();}
+function_entry:
+    type tID tLPAR function_params params tRPAR {fun_add($2, asm_current(), $1);}
+  ;
+
+function:
+    function_entry block {asm_add(ASM_RET, 0, NIL, NIL, 1); sym_clear();}
   ;
 
 type:
@@ -92,13 +98,21 @@ params_void:
   | tVOID
   ;
 
+params_full_p1:
+    tINT tID tCOMMA {sym_add($2);}
+  ;
+
 params_full:
     tINT tID {sym_add($2);}
-  | tINT tID tCOMMA {sym_add($2);} params_full
+  | params_full_p1 params_full
+  ;
+
+block_entry:
+    tLBRACE {sym_inc_depth();}
   ;
 
 block:
-  tLBRACE  {sym_inc_depth();} instructions tRBRACE {sym_clear();}
+    block_entry instructions tRBRACE {sym_clear();}
   ;
 
 instructions:
@@ -328,12 +342,6 @@ declar:
                                                               asm_add(ASM_STR, 0, sym_get_addr($2), NIL, 2); 
                                                               sym_remove_last();}
   ;
-
-/*ids:
-    tID 
-  | tID {sym_add($1); printTab();} tCOMMA ids 
-  ;
-*/
 
 funcreturn:
     tRETURN expr {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
