@@ -77,28 +77,27 @@
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
 #define ASM_AFF 0
-#define ASM_COP 1
-#define ASM_ADD 2
-#define ASM_SUB 3
-#define ASM_MUL 4
-#define ASM_DIV 5
-#define ASM_B 6
-#define ASM_NIL 7
-#define ASM_CMP 8
-#define ASM_BEQ 9
-#define ASM_BNE 10
-#define ASM_RET 11
-#define ASM_PSH 12
-#define ASM_POP 13
-#define ASM_BF 14
-#define ASM_STR 15
-#define ASM_LDR 16
-#define ASM_BN 17
-#define ASM_BNZ 18
-#define ASM_BP 19
-#define ASM_BSP 20
+#define ASM_ADD 1
+#define ASM_SUB 2
+#define ASM_MUL 3
+#define ASM_DIV 4
+#define ASM_B 5
+#define ASM_NIL 6
+#define ASM_CMP 7
+#define ASM_BEQ 8
+#define ASM_BNE 9
+#define ASM_RET 10
+#define ASM_PSH 11
+#define ASM_POP 12
+#define ASM_BF 13
+#define ASM_STR 14
+#define ASM_LDR 15
+#define ASM_BN 16
+#define ASM_BNZ 17
+#define ASM_BP 18
+#define ASM_BSP 19
 
-#line 102 "analyzer.tab.c"
+#line 101 "analyzer.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -182,7 +181,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 38 "analyzer.y"
+#line 37 "analyzer.y"
  
     char* s;
     int i; 
@@ -194,7 +193,7 @@ union YYSTYPE
     int is_and;
     int f_type;
 
-#line 198 "analyzer.tab.c"
+#line 197 "analyzer.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -207,12 +206,12 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 /* "%code provides" blocks.  */
-#line 33 "analyzer.y"
+#line 32 "analyzer.y"
 
   int yylex (void);
   void yyerror (const char *);
 
-#line 216 "analyzer.tab.c"
+#line 215 "analyzer.tab.c"
 
 #endif /* !YY_YY_ANALYZER_TAB_H_INCLUDED  */
 
@@ -579,14 +578,14 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    68,    68,    69,    73,    76,    73,    82,    83,    87,
-      88,    92,    93,    97,    98,    98,   102,   102,   106,   107,
-     111,   112,   113,   114,   115,   116,   117,   118,   119,   123,
-     123,   136,   138,   137,   149,   150,   156,   162,   168,   174,
-     175,   176,   187,   190,   193,   197,   208,   220,   228,   236,
-     244,   252,   270,   288,   296,   306,   307,   306,   317,   320,
-     327,   328,   328,   328,   340,   347,   347,   364,   365,   369,
-     373,   374
+       0,    67,    67,    68,    72,    75,    72,    81,    82,    86,
+      87,    91,    92,    96,    97,    97,   101,   101,   105,   106,
+     110,   111,   112,   113,   114,   115,   116,   117,   118,   122,
+     122,   135,   137,   136,   148,   149,   155,   161,   167,   173,
+     174,   175,   186,   189,   192,   196,   207,   219,   227,   235,
+     243,   251,   269,   287,   295,   305,   306,   305,   316,   319,
+     326,   327,   327,   327,   339,   346,   346,   359,   360,   364,
+     368,   369
 };
 #endif
 
@@ -1459,137 +1458,137 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 73 "analyzer.y"
+#line 72 "analyzer.y"
                    {sym_inc_depth(); sym_add("?ADDR");
                     sym_add("?VAL");}
-#line 1466 "analyzer.tab.c"
+#line 1465 "analyzer.tab.c"
     break;
 
   case 5:
-#line 76 "analyzer.y"
+#line 75 "analyzer.y"
                  {fun_add((yyvsp[-4].s), asm_current(), (yyvsp[-5].f_type));}
-#line 1472 "analyzer.tab.c"
+#line 1471 "analyzer.tab.c"
     break;
 
   case 6:
-#line 78 "analyzer.y"
+#line 77 "analyzer.y"
           {asm_add(ASM_RET, 0, NIL, NIL, 1); sym_clear();}
-#line 1478 "analyzer.tab.c"
+#line 1477 "analyzer.tab.c"
     break;
 
   case 7:
-#line 82 "analyzer.y"
+#line 81 "analyzer.y"
          {(yyval.f_type) = 1;}
-#line 1484 "analyzer.tab.c"
+#line 1483 "analyzer.tab.c"
     break;
 
   case 8:
-#line 83 "analyzer.y"
+#line 82 "analyzer.y"
           {(yyval.f_type) = 0;}
-#line 1490 "analyzer.tab.c"
+#line 1489 "analyzer.tab.c"
     break;
 
   case 13:
-#line 97 "analyzer.y"
+#line 96 "analyzer.y"
              {sym_add((yyvsp[0].s));}
-#line 1496 "analyzer.tab.c"
+#line 1495 "analyzer.tab.c"
     break;
 
   case 14:
-#line 98 "analyzer.y"
+#line 97 "analyzer.y"
                     {sym_add((yyvsp[-1].s));}
-#line 1502 "analyzer.tab.c"
+#line 1501 "analyzer.tab.c"
     break;
 
   case 16:
-#line 102 "analyzer.y"
+#line 101 "analyzer.y"
            {sym_inc_depth();}
-#line 1508 "analyzer.tab.c"
+#line 1507 "analyzer.tab.c"
     break;
 
   case 17:
-#line 102 "analyzer.y"
+#line 101 "analyzer.y"
                                                    {sym_clear();}
-#line 1514 "analyzer.tab.c"
+#line 1513 "analyzer.tab.c"
     break;
 
   case 29:
-#line 123 "analyzer.y"
+#line 122 "analyzer.y"
                              {(yyvsp[-3].branch_info).branch_line = asm_current()-1;
                               (yyvsp[-3].branch_info).was_and = (yyvsp[-1].is_and);
                               (yyvsp[-3].branch_info).and_branch_line = asm_current()-5;}
-#line 1522 "analyzer.tab.c"
+#line 1521 "analyzer.tab.c"
     break;
 
   case 30:
-#line 127 "analyzer.y"
+#line 126 "analyzer.y"
         {(yyvsp[-5].branch_info).end = asm_current();
         (yyval.branch_info).was_and = (yyvsp[-5].branch_info).was_and;
         (yyval.branch_info).end = (yyvsp[-5].branch_info).end;
         (yyval.branch_info).branch_line = (yyvsp[-5].branch_info).branch_line;
         asm_update((yyvsp[-5].branch_info).branch_line, 1, (yyvsp[-5].branch_info).end); 
         if ((yyvsp[-3].is_and)) {asm_update((yyvsp[-5].branch_info).and_branch_line, 1, (yyvsp[-5].branch_info).end);}}
-#line 1533 "analyzer.tab.c"
+#line 1532 "analyzer.tab.c"
     break;
 
   case 32:
-#line 138 "analyzer.y"
+#line 137 "analyzer.y"
             {asm_add(ASM_B, NIL, NIL, NIL, 1); 
             (yyvsp[-1].branch_info).end = asm_current(); 
             asm_update((yyvsp[-1].branch_info).branch_line, 1, (yyvsp[-1].branch_info).end); //update of the if to go directly in the ELSE block if needed
             if ((yyvsp[-1].branch_info).was_and) {asm_update((yyvsp[-1].branch_info).and_branch_line, 1, (yyvsp[-1].branch_info).end);}}
-#line 1542 "analyzer.tab.c"
+#line 1541 "analyzer.tab.c"
     break;
 
   case 33:
-#line 143 "analyzer.y"
+#line 142 "analyzer.y"
           {(yyvsp[-2].branch_info).end = asm_current(); 
             asm_update((yyvsp[-3].branch_info).end-1, 1, (yyvsp[-2].branch_info).end);}
-#line 1549 "analyzer.tab.c"
+#line 1548 "analyzer.tab.c"
     break;
 
   case 35:
-#line 150 "analyzer.y"
+#line 149 "analyzer.y"
                    {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_ADD, 0, 0, 1, 3);
                     asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
                     sym_remove_last();}
-#line 1559 "analyzer.tab.c"
+#line 1558 "analyzer.tab.c"
     break;
 
   case 36:
-#line 156 "analyzer.y"
+#line 155 "analyzer.y"
                    {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_SUB, 0, 0, 1, 3);
                     asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
                     sym_remove_last();}
-#line 1569 "analyzer.tab.c"
+#line 1568 "analyzer.tab.c"
     break;
 
   case 37:
-#line 162 "analyzer.y"
+#line 161 "analyzer.y"
                    {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_MUL, 0, 0, 1, 3);
                     asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
                     sym_remove_last();}
-#line 1579 "analyzer.tab.c"
+#line 1578 "analyzer.tab.c"
     break;
 
   case 38:
-#line 168 "analyzer.y"
+#line 167 "analyzer.y"
                    {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_DIV, 0, 0, 1, 3);
                     asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
                     sym_remove_last();}
-#line 1589 "analyzer.tab.c"
+#line 1588 "analyzer.tab.c"
     break;
 
   case 41:
-#line 176 "analyzer.y"
+#line 175 "analyzer.y"
               {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
                asm_add(ASM_STR, 0, sym_last(), NIL, 2);
@@ -1598,27 +1597,27 @@ yyreduce:
                asm_add(ASM_SUB, 0, 0, 1, 3);
                asm_add(ASM_STR, 0, sym_next_last(), NIL, 2);
                sym_remove_last();}
-#line 1602 "analyzer.tab.c"
+#line 1601 "analyzer.tab.c"
     break;
 
   case 42:
-#line 187 "analyzer.y"
+#line 186 "analyzer.y"
         {sym_add("_");
          asm_add(ASM_LDR, 0, sym_get_addr((yyvsp[0].s)), NIL, 2); 
          asm_add(ASM_STR, 0, sym_last(), NIL, 2); }
-#line 1610 "analyzer.tab.c"
+#line 1609 "analyzer.tab.c"
     break;
 
   case 43:
-#line 190 "analyzer.y"
+#line 189 "analyzer.y"
         {sym_add("_"); 
          asm_add(ASM_AFF, 0, (yyvsp[0].i), NIL, 2);
          asm_add(ASM_STR, 0, sym_last(), NIL, 2);}
-#line 1618 "analyzer.tab.c"
+#line 1617 "analyzer.tab.c"
     break;
 
   case 45:
-#line 197 "analyzer.y"
+#line 196 "analyzer.y"
          {sym_add("_"); 
           asm_add(ASM_AFF, 0, 0, NIL, 2);
           asm_add(ASM_STR, 0, sym_last(), NIL, 2);
@@ -1629,11 +1628,11 @@ yyreduce:
           sym_remove_last();
           sym_remove_last(); // (expr) <=> (expr != 0)
           (yyval.is_and) = 0;}
-#line 1633 "analyzer.tab.c"
+#line 1632 "analyzer.tab.c"
     break;
 
   case 46:
-#line 208 "analyzer.y"
+#line 207 "analyzer.y"
               {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
                asm_add(ASM_STR, 0, sym_last(), NIL, 2);
@@ -1644,11 +1643,11 @@ yyreduce:
                sym_remove_last();
                sym_remove_last(); // (!expr) <=> (expr == 0)
                (yyval.is_and) = 0;}
-#line 1648 "analyzer.tab.c"
+#line 1647 "analyzer.tab.c"
     break;
 
   case 47:
-#line 220 "analyzer.y"
+#line 219 "analyzer.y"
                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
@@ -1656,11 +1655,11 @@ yyreduce:
                    sym_remove_last();
                    sym_remove_last();
                    (yyval.is_and) = 0;}
-#line 1660 "analyzer.tab.c"
+#line 1659 "analyzer.tab.c"
     break;
 
   case 48:
-#line 228 "analyzer.y"
+#line 227 "analyzer.y"
                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
@@ -1668,11 +1667,11 @@ yyreduce:
                    sym_remove_last();
                    sym_remove_last();
                    (yyval.is_and) = 0;}
-#line 1672 "analyzer.tab.c"
+#line 1671 "analyzer.tab.c"
     break;
 
   case 49:
-#line 236 "analyzer.y"
+#line 235 "analyzer.y"
                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
@@ -1680,11 +1679,11 @@ yyreduce:
                    sym_remove_last();
                    sym_remove_last();
                    (yyval.is_and) = 0;}
-#line 1684 "analyzer.tab.c"
+#line 1683 "analyzer.tab.c"
     break;
 
   case 50:
-#line 244 "analyzer.y"
+#line 243 "analyzer.y"
                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
@@ -1692,11 +1691,11 @@ yyreduce:
                    sym_remove_last();
                    sym_remove_last();
                    (yyval.is_and) = 0;}
-#line 1696 "analyzer.tab.c"
+#line 1695 "analyzer.tab.c"
     break;
 
   case 51:
-#line 252 "analyzer.y"
+#line 251 "analyzer.y"
                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
                    sym_add("_");
                    asm_add(ASM_AFF, 1, 0, NIL, 2);
@@ -1714,11 +1713,11 @@ yyreduce:
                    sym_remove_last();
                    sym_remove_last();
                    (yyval.is_and) = 0;}
-#line 1718 "analyzer.tab.c"
+#line 1717 "analyzer.tab.c"
     break;
 
   case 52:
-#line 270 "analyzer.y"
+#line 269 "analyzer.y"
                    {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
                     sym_add("_");
                     asm_add(ASM_AFF, 1, 0, NIL, 2);
@@ -1736,11 +1735,11 @@ yyreduce:
                     sym_remove_last();
                     sym_remove_last();
                     (yyval.is_and) = 1;}
-#line 1740 "analyzer.tab.c"
+#line 1739 "analyzer.tab.c"
     break;
 
   case 53:
-#line 288 "analyzer.y"
+#line 287 "analyzer.y"
                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
@@ -1748,11 +1747,11 @@ yyreduce:
                    sym_remove_last();
                    sym_remove_last();
                    (yyval.is_and) = 0;}
-#line 1752 "analyzer.tab.c"
+#line 1751 "analyzer.tab.c"
     break;
 
   case 54:
-#line 296 "analyzer.y"
+#line 295 "analyzer.y"
                    {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
                     asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
@@ -1760,100 +1759,96 @@ yyreduce:
                     sym_remove_last();
                     sym_remove_last();
                     (yyval.is_and) = 0;}
-#line 1764 "analyzer.tab.c"
+#line 1763 "analyzer.tab.c"
     break;
 
   case 55:
-#line 306 "analyzer.y"
+#line 305 "analyzer.y"
            {(yyvsp[0].branch_info).begin = asm_current();}
-#line 1770 "analyzer.tab.c"
+#line 1769 "analyzer.tab.c"
     break;
 
   case 56:
-#line 307 "analyzer.y"
+#line 306 "analyzer.y"
                     { (yyvsp[-3].branch_info).branch_line = asm_current()-1;
                       (yyvsp[-3].branch_info).and_branch_line = asm_current()-5;}
-#line 1777 "analyzer.tab.c"
+#line 1776 "analyzer.tab.c"
     break;
 
   case 57:
-#line 310 "analyzer.y"
+#line 309 "analyzer.y"
                 {asm_add(ASM_B, (yyvsp[-6].branch_info).begin, NIL, NIL, 1);
                 (yyvsp[-6].branch_info).end = asm_current();
                 asm_update((yyvsp[-6].branch_info).branch_line, 1, (yyvsp[-6].branch_info).end);
                 if ((yyvsp[-3].is_and)) {asm_update((yyvsp[-6].branch_info).and_branch_line, 1, (yyvsp[-6].branch_info).end);}}
-#line 1786 "analyzer.tab.c"
+#line 1785 "analyzer.tab.c"
     break;
 
   case 59:
-#line 320 "analyzer.y"
+#line 319 "analyzer.y"
                      {sym_set_init((yyvsp[-2].s)); 
                       asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
                       asm_add(ASM_STR, 0, sym_get_addr((yyvsp[-2].s)), NIL, 2);  
                       sym_remove_last();}
-#line 1795 "analyzer.tab.c"
+#line 1794 "analyzer.tab.c"
     break;
 
   case 60:
-#line 327 "analyzer.y"
+#line 326 "analyzer.y"
              {sym_add((yyvsp[0].s));}
-#line 1801 "analyzer.tab.c"
+#line 1800 "analyzer.tab.c"
     break;
 
   case 61:
-#line 328 "analyzer.y"
+#line 327 "analyzer.y"
              {sym_add((yyvsp[0].s));}
-#line 1807 "analyzer.tab.c"
+#line 1806 "analyzer.tab.c"
     break;
 
   case 62:
-#line 328 "analyzer.y"
+#line 327 "analyzer.y"
                                     {sym_set_init((yyvsp[-2].s));}
-#line 1813 "analyzer.tab.c"
+#line 1812 "analyzer.tab.c"
     break;
 
   case 63:
-#line 328 "analyzer.y"
+#line 327 "analyzer.y"
                                                              {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
                                                               asm_add(ASM_STR, 0, sym_get_addr((yyvsp[-4].s)), NIL, 2); 
                                                               sym_remove_last();}
-#line 1821 "analyzer.tab.c"
+#line 1820 "analyzer.tab.c"
     break;
 
   case 64:
-#line 340 "analyzer.y"
+#line 339 "analyzer.y"
                  {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
                   asm_add(ASM_STR, 0, sym_get_addr("?VAL"), NIL, 2); 
                   sym_remove_last();
                   asm_add(ASM_RET, 0, NIL, NIL, 1);}
-#line 1830 "analyzer.tab.c"
+#line 1829 "analyzer.tab.c"
     break;
 
   case 65:
-#line 347 "analyzer.y"
+#line 346 "analyzer.y"
               {asm_set_push(sym_last()+1);
                sym_add("!ADDR"); sym_add("!VAL");}
-#line 1837 "analyzer.tab.c"
+#line 1836 "analyzer.tab.c"
     break;
 
   case 66:
-#line 350 "analyzer.y"
-                     {if (fun_is_void((yyvsp[-4].s)))
-                      {printf("error: function %s has no return value", (yyvsp[-4].s));
-                       exit(-1);}
-      
-                      asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
+#line 349 "analyzer.y"
+                     {asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_BF, fun_get_addr((yyvsp[-4].s)), NIL, NIL, 1);
                       asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);
                       asm_add(ASM_STR, 0, sym_get_addr("!ADDR"), NIL, 2);
                       sym_remove_lasts(sym_last()+1 - asm_push());
                       sym_add("_");}
-#line 1853 "analyzer.tab.c"
+#line 1848 "analyzer.tab.c"
     break;
 
 
-#line 1857 "analyzer.tab.c"
+#line 1852 "analyzer.tab.c"
 
       default: break;
     }
@@ -2085,7 +2080,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 377 "analyzer.y"
+#line 372 "analyzer.y"
 
 
 void yyerror(const char *msg) {

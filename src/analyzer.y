@@ -346,11 +346,7 @@ funccall:
     tID tLPAR {asm_set_push(sym_last()+1);
                sym_add("!ADDR"); sym_add("!VAL");} 
     
-    callparams tRPAR {if (fun_is_void($1))
-                      {printf("error: function %s has no return value", $1);
-                       exit(-1);}
-      
-                      asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
+    callparams tRPAR {asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
                       asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);

@@ -85,7 +85,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 38 "analyzer.y"
+#line 37 "analyzer.y"
  
     char* s;
     int i; 
@@ -110,7 +110,7 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 /* "%code provides" blocks.  */
-#line 33 "analyzer.y"
+#line 32 "analyzer.y"
 
   int yylex (void);
   void yyerror (const char *);
