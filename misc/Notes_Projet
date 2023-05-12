@@ -17,10 +17,9 @@ en cas d'erreur : afficher les instructions
 
 
 TODO:
-    - Expr bool restantes
+    - Clean le code : mettre les actions intermédiaires dans des non-terminaux ?
+
     - Print => Amélioration
     - Expr bool imbriquées => Amélioration
-    - Verif function return int or void
-
-    - ligne 119 bison : $$ ?
-    - update python
+    - Verif function int or void si return => Amélioration
+                                    

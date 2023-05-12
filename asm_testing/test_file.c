@@ -3,11 +3,16 @@
 
 */
 
+int f() {return 34;}
 
 int main()
 {
-    if (1 && 1) {
-        int a = 99;
+    if (f() > 33)
+    {
+        return 34;
     }
-    int b = 55;
+    else
+    {
+        return 78;
+    }
 }

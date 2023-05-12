@@ -55,4 +55,22 @@ void fun_print_tab();
 int fun_get_addr(char* s);
 
 
+/**
+ * Returns the index of the function with the given name.
+ *
+ * @params
+ * s : the name of the function.
+*/
+int fun_get_index(char* s);
+
+
+/**
+ * Returns true if the given function is void.
+ *
+ * @params
+ * s : the name of the function.
+*/
+int fun_is_void(char* s);
+
+
 #endif

@@ -2,12 +2,12 @@ Grammaire
 
     0 $accept: functions $end
 
-    1 functions: ε
+    1 functions: %empty
     2          | function functions
 
-    3 $@1: ε
+    3 $@1: %empty
 
-    4 $@2: ε
+    4 $@2: %empty
 
     5 function: type tID tLPAR $@1 params tRPAR $@2 block
 
@@ -17,20 +17,20 @@ Grammaire
     8 params: params_void
     9       | params_full
 
-   10 params_void: ε
+   10 params_void: %empty
    11            | tVOID
 
    12 params_full: tINT tID
 
-   13 $@3: ε
+   13 $@3: %empty
 
    14 params_full: tINT tID tCOMMA $@3 params_full
 
-   15 $@4: ε
+   15 $@4: %empty
 
    16 block: tLBRACE $@4 instructions tRBRACE
 
-   17 instructions: ε
+   17 instructions: %empty
    18             | instruction instructions
 
    19 instruction: print tSEMI
@@ -43,13 +43,13 @@ Grammaire
    26            | block
    27            | tSEMI
 
-   28 $@5: ε
+   28 $@5: %empty
 
    29 ifheader: tIF tLPAR condition tRPAR $@5 block
 
    30 condins: ifheader
 
-   31 $@6: ε
+   31 $@6: %empty
 
    32 condins: ifheader tELSE $@6 block
 
@@ -77,9 +77,9 @@ Grammaire
    52          | expr tEQ expr
    53          | expr tNEQ expr
 
-   54 $@7: ε
+   54 $@7: %empty
 
-   55 $@8: ε
+   55 $@8: %empty
 
    56 loop: tWHILE $@7 tLPAR condition $@8 tRPAR block
 
@@ -89,22 +89,22 @@ Grammaire
 
    59 declar: tINT tID
 
-   60 $@9: ε
+   60 $@9: %empty
 
-   61 $@10: ε
+   61 $@10: %empty
 
    62 declar: tINT tID $@9 tASSIGN $@10 expr
 
    63 funcreturn: tRETURN expr
 
-   64 $@11: ε
+   64 $@11: %empty
 
    65 funccall: tID tLPAR $@11 callparams tRPAR
 
    66 callparams: callparams_void
    67           | callparams_full
 
-   68 callparams_void: ε
+   68 callparams_void: %empty
 
    69 callparams_full: expr
    70                | expr tCOMMA callparams_full
@@ -255,7 +255,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 0
 
-    0 $accept: • functions $end
+    0 $accept: . functions $end
 
     tINT   décalage et aller à l'état 1
     tVOID  décalage et aller à l'état 2
@@ -269,28 +269,28 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 1
 
-    6 type: tINT •
+    6 type: tINT .
 
     $défaut  réduction par utilisation de la règle 6 (type)
 
 
 État 2
 
-    7 type: tVOID •
+    7 type: tVOID .
 
     $défaut  réduction par utilisation de la règle 7 (type)
 
 
 État 3
 
-    0 $accept: functions • $end
+    0 $accept: functions . $end
 
     $end  décalage et aller à l'état 6
 
 
 État 4
 
-    2 functions: function • functions
+    2 functions: function . functions
 
     tINT   décalage et aller à l'état 1
     tVOID  décalage et aller à l'état 2
@@ -304,35 +304,35 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 5
 
-    5 function: type • tID tLPAR $@1 params tRPAR $@2 block
+    5 function: type . tID tLPAR $@1 params tRPAR $@2 block
 
     tID  décalage et aller à l'état 8
 
 
 État 6
 
-    0 $accept: functions $end •
+    0 $accept: functions $end .
 
     $défaut  accepter
 
 
 État 7
 
-    2 functions: function functions •
+    2 functions: function functions .
 
     $défaut  réduction par utilisation de la règle 2 (functions)
 
 
 État 8
 
-    5 function: type tID • tLPAR $@1 params tRPAR $@2 block
+    5 function: type tID . tLPAR $@1 params tRPAR $@2 block
 
     tLPAR  décalage et aller à l'état 9
 
 
 État 9
 
-    5 function: type tID tLPAR • $@1 params tRPAR $@2 block
+    5 function: type tID tLPAR . $@1 params tRPAR $@2 block
 
     $défaut  réduction par utilisation de la règle 3 ($@1)
 
@@ -341,7 +341,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 10
 
-    5 function: type tID tLPAR $@1 • params tRPAR $@2 block
+    5 function: type tID tLPAR $@1 . params tRPAR $@2 block
 
     tINT   décalage et aller à l'état 11
     tVOID  décalage et aller à l'état 12
@@ -355,44 +355,44 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 11
 
-   12 params_full: tINT • tID
-   14            | tINT • tID tCOMMA $@3 params_full
+   12 params_full: tINT . tID
+   14            | tINT . tID tCOMMA $@3 params_full
 
     tID  décalage et aller à l'état 16
 
 
 État 12
 
-   11 params_void: tVOID •
+   11 params_void: tVOID .
 
     $défaut  réduction par utilisation de la règle 11 (params_void)
 
 
 État 13
 
-    5 function: type tID tLPAR $@1 params • tRPAR $@2 block
+    5 function: type tID tLPAR $@1 params . tRPAR $@2 block
 
     tRPAR  décalage et aller à l'état 17
 
 
 État 14
 
-    8 params: params_void •
+    8 params: params_void .
 
     $défaut  réduction par utilisation de la règle 8 (params)
 
 
 État 15
 
-    9 params: params_full •
+    9 params: params_full .
 
     $défaut  réduction par utilisation de la règle 9 (params)
 
 
 État 16
 
-   12 params_full: tINT tID •
-   14            | tINT tID • tCOMMA $@3 params_full
+   12 params_full: tINT tID .
+   14            | tINT tID . tCOMMA $@3 params_full
 
     tCOMMA  décalage et aller à l'état 18
 
@@ -401,7 +401,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 17
 
-    5 function: type tID tLPAR $@1 params tRPAR • $@2 block
+    5 function: type tID tLPAR $@1 params tRPAR . $@2 block
 
     $défaut  réduction par utilisation de la règle 4 ($@2)
 
@@ -410,7 +410,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 18
 
-   14 params_full: tINT tID tCOMMA • $@3 params_full
+   14 params_full: tINT tID tCOMMA . $@3 params_full
 
     $défaut  réduction par utilisation de la règle 13 ($@3)
 
@@ -419,7 +419,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 19
 
-    5 function: type tID tLPAR $@1 params tRPAR $@2 • block
+    5 function: type tID tLPAR $@1 params tRPAR $@2 . block
 
     tLBRACE  décalage et aller à l'état 21
 
@@ -428,7 +428,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 20
 
-   14 params_full: tINT tID tCOMMA $@3 • params_full
+   14 params_full: tINT tID tCOMMA $@3 . params_full
 
     tINT  décalage et aller à l'état 11
 
@@ -437,7 +437,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 21
 
-   16 block: tLBRACE • $@4 instructions tRBRACE
+   16 block: tLBRACE . $@4 instructions tRBRACE
 
     $défaut  réduction par utilisation de la règle 15 ($@4)
 
@@ -446,21 +446,21 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 22
 
-    5 function: type tID tLPAR $@1 params tRPAR $@2 block •
+    5 function: type tID tLPAR $@1 params tRPAR $@2 block .
 
     $défaut  réduction par utilisation de la règle 5 (function)
 
 
 État 23
 
-   14 params_full: tINT tID tCOMMA $@3 params_full •
+   14 params_full: tINT tID tCOMMA $@3 params_full .
 
     $défaut  réduction par utilisation de la règle 14 (params_full)
 
 
 État 24
 
-   16 block: tLBRACE $@4 • instructions tRBRACE
+   16 block: tLBRACE $@4 . instructions tRBRACE
 
     tID      décalage et aller à l'état 25
     tIF      décalage et aller à l'état 26
@@ -488,8 +488,8 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 25
 
-   58 assign: tID • tASSIGN expr
-   65 funccall: tID • tLPAR $@11 callparams tRPAR
+   58 assign: tID . tASSIGN expr
+   65 funccall: tID . tLPAR $@11 callparams tRPAR
 
     tASSIGN  décalage et aller à l'état 43
     tLPAR    décalage et aller à l'état 44
@@ -497,14 +497,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 26
 
-   29 ifheader: tIF • tLPAR condition tRPAR $@5 block
+   29 ifheader: tIF . tLPAR condition tRPAR $@5 block
 
     tLPAR  décalage et aller à l'état 45
 
 
 État 27
 
-   56 loop: tWHILE • $@7 tLPAR condition $@8 tRPAR block
+   56 loop: tWHILE . $@7 tLPAR condition $@8 tRPAR block
 
     $défaut  réduction par utilisation de la règle 54 ($@7)
 
@@ -513,14 +513,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 28
 
-   57 print: tPRINT • tLPAR expr tRPAR
+   57 print: tPRINT . tLPAR expr tRPAR
 
     tLPAR  décalage et aller à l'état 47
 
 
 État 29
 
-   63 funcreturn: tRETURN • expr
+   63 funcreturn: tRETURN . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -535,36 +535,36 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 30
 
-   59 declar: tINT • tID
-   62       | tINT • tID $@9 tASSIGN $@10 expr
+   59 declar: tINT . tID
+   62       | tINT . tID $@9 tASSIGN $@10 expr
 
     tID  décalage et aller à l'état 56
 
 
 État 31
 
-   27 instruction: tSEMI •
+   27 instruction: tSEMI .
 
     $défaut  réduction par utilisation de la règle 27 (instruction)
 
 
 État 32
 
-   26 instruction: block •
+   26 instruction: block .
 
     $défaut  réduction par utilisation de la règle 26 (instruction)
 
 
 État 33
 
-   16 block: tLBRACE $@4 instructions • tRBRACE
+   16 block: tLBRACE $@4 instructions . tRBRACE
 
     tRBRACE  décalage et aller à l'état 57
 
 
 État 34
 
-   18 instructions: instruction • instructions
+   18 instructions: instruction . instructions
 
     tID      décalage et aller à l'état 25
     tIF      décalage et aller à l'état 26
@@ -592,8 +592,8 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 35
 
-   30 condins: ifheader •
-   32        | ifheader • tELSE $@6 block
+   30 condins: ifheader .
+   32        | ifheader . tELSE $@6 block
 
     tELSE  décalage et aller à l'état 59
 
@@ -602,56 +602,56 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 36
 
-   25 instruction: condins •
+   25 instruction: condins .
 
     $défaut  réduction par utilisation de la règle 25 (instruction)
 
 
 État 37
 
-   24 instruction: loop •
+   24 instruction: loop .
 
     $défaut  réduction par utilisation de la règle 24 (instruction)
 
 
 État 38
 
-   19 instruction: print • tSEMI
+   19 instruction: print . tSEMI
 
     tSEMI  décalage et aller à l'état 60
 
 
 État 39
 
-   20 instruction: assign • tSEMI
+   20 instruction: assign . tSEMI
 
     tSEMI  décalage et aller à l'état 61
 
 
 État 40
 
-   21 instruction: declar • tSEMI
+   21 instruction: declar . tSEMI
 
     tSEMI  décalage et aller à l'état 62
 
 
 État 41
 
-   22 instruction: funcreturn • tSEMI
+   22 instruction: funcreturn . tSEMI
 
     tSEMI  décalage et aller à l'état 63
 
 
 État 42
 
-   23 instruction: funccall • tSEMI
+   23 instruction: funccall . tSEMI
 
     tSEMI  décalage et aller à l'état 64
 
 
 État 43
 
-   58 assign: tID tASSIGN • expr
+   58 assign: tID tASSIGN . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -666,7 +666,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 44
 
-   65 funccall: tID tLPAR • $@11 callparams tRPAR
+   65 funccall: tID tLPAR . $@11 callparams tRPAR
 
     $défaut  réduction par utilisation de la règle 64 ($@11)
 
@@ -675,7 +675,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 45
 
-   29 ifheader: tIF tLPAR • condition tRPAR $@5 block
+   29 ifheader: tIF tLPAR . condition tRPAR $@5 block
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -692,14 +692,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 46
 
-   56 loop: tWHILE $@7 • tLPAR condition $@8 tRPAR block
+   56 loop: tWHILE $@7 . tLPAR condition $@8 tRPAR block
 
     tLPAR  décalage et aller à l'état 70
 
 
 État 47
 
-   57 print: tPRINT tLPAR • expr tRPAR
+   57 print: tPRINT tLPAR . expr tRPAR
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -714,8 +714,8 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 48
 
-   41 term: tID •
-   65 funccall: tID • tLPAR $@11 callparams tRPAR
+   41 term: tID .
+   65 funccall: tID . tLPAR $@11 callparams tRPAR
 
     tLPAR  décalage et aller à l'état 44
 
@@ -724,14 +724,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 49
 
-   42 term: tNB •
+   42 term: tNB .
 
     $défaut  réduction par utilisation de la règle 42 (term)
 
 
 État 50
 
-   39 expr: tADD • expr
+   39 expr: tADD . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -746,7 +746,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 51
 
-   40 expr: tSUB • expr
+   40 expr: tSUB . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -761,7 +761,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 52
 
-   38 expr: tLPAR • expr tRPAR
+   38 expr: tLPAR . expr tRPAR
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -776,11 +776,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 53
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   63 funcreturn: tRETURN expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   63 funcreturn: tRETURN expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -792,24 +792,24 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 54
 
-   33 expr: term •
+   33 expr: term .
 
     $défaut  réduction par utilisation de la règle 33 (expr)
 
 
 État 55
 
-   43 term: funccall •
+   43 term: funccall .
 
     $défaut  réduction par utilisation de la règle 43 (term)
 
 
 État 56
 
-   59 declar: tINT tID •
-   62       | tINT tID • $@9 tASSIGN $@10 expr
+   59 declar: tINT tID .
+   62       | tINT tID . $@9 tASSIGN $@10 expr
 
-    tASSIGN  réduction par utilisation de la règle 60 ($@9)
+    tASSIGN   réduction par utilisation de la règle 60 ($@9)
     $défaut  réduction par utilisation de la règle 59 (declar)
 
     $@9  aller à l'état 79
@@ -817,21 +817,21 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 57
 
-   16 block: tLBRACE $@4 instructions tRBRACE •
+   16 block: tLBRACE $@4 instructions tRBRACE .
 
     $défaut  réduction par utilisation de la règle 16 (block)
 
 
 État 58
 
-   18 instructions: instruction instructions •
+   18 instructions: instruction instructions .
 
     $défaut  réduction par utilisation de la règle 18 (instructions)
 
 
 État 59
 
-   32 condins: ifheader tELSE • $@6 block
+   32 condins: ifheader tELSE . $@6 block
 
     $défaut  réduction par utilisation de la règle 31 ($@6)
 
@@ -840,46 +840,46 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 60
 
-   19 instruction: print tSEMI •
+   19 instruction: print tSEMI .
 
     $défaut  réduction par utilisation de la règle 19 (instruction)
 
 
 État 61
 
-   20 instruction: assign tSEMI •
+   20 instruction: assign tSEMI .
 
     $défaut  réduction par utilisation de la règle 20 (instruction)
 
 
 État 62
 
-   21 instruction: declar tSEMI •
+   21 instruction: declar tSEMI .
 
     $défaut  réduction par utilisation de la règle 21 (instruction)
 
 
 État 63
 
-   22 instruction: funcreturn tSEMI •
+   22 instruction: funcreturn tSEMI .
 
     $défaut  réduction par utilisation de la règle 22 (instruction)
 
 
 État 64
 
-   23 instruction: funccall tSEMI •
+   23 instruction: funccall tSEMI .
 
     $défaut  réduction par utilisation de la règle 23 (instruction)
 
 
 État 65
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   58 assign: tID tASSIGN expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   58 assign: tID tASSIGN expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -891,7 +891,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 66
 
-   65 funccall: tID tLPAR $@11 • callparams tRPAR
+   65 funccall: tID tLPAR $@11 . callparams tRPAR
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -911,7 +911,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 67
 
-   45 condition: tNOT • expr
+   45 condition: tNOT . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -926,19 +926,19 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 68
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   44 condition: expr •
-   46          | expr • tLT expr
-   47          | expr • tLE expr
-   48          | expr • tGT expr
-   49          | expr • tGE expr
-   50          | expr • tOR expr
-   51          | expr • tAND expr
-   52          | expr • tEQ expr
-   53          | expr • tNEQ expr
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   44 condition: expr .
+   46          | expr . tLT expr
+   47          | expr . tLE expr
+   48          | expr . tGT expr
+   49          | expr . tGE expr
+   50          | expr . tOR expr
+   51          | expr . tAND expr
+   52          | expr . tEQ expr
+   53          | expr . tNEQ expr
 
     tLT   décalage et aller à l'état 86
     tLE   décalage et aller à l'état 87
@@ -958,14 +958,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 69
 
-   29 ifheader: tIF tLPAR condition • tRPAR $@5 block
+   29 ifheader: tIF tLPAR condition . tRPAR $@5 block
 
     tRPAR  décalage et aller à l'état 94
 
 
 État 70
 
-   56 loop: tWHILE $@7 tLPAR • condition $@8 tRPAR block
+   56 loop: tWHILE $@7 tLPAR . condition $@8 tRPAR block
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -982,11 +982,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 71
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   57 print: tPRINT tLPAR expr • tRPAR
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   57 print: tPRINT tLPAR expr . tRPAR
 
     tADD   décalage et aller à l'état 75
     tSUB   décalage et aller à l'état 76
@@ -997,11 +997,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 72
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   39     | tADD expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   39     | tADD expr .
 
     tDIV  décalage et aller à l'état 77
     tMUL  décalage et aller à l'état 78
@@ -1011,11 +1011,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 73
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   40     | tSUB expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   40     | tSUB expr .
 
     tDIV  décalage et aller à l'état 77
     tMUL  décalage et aller à l'état 78
@@ -1025,11 +1025,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 74
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   38     | tLPAR expr • tRPAR
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   38     | tLPAR expr . tRPAR
 
     tADD   décalage et aller à l'état 75
     tSUB   décalage et aller à l'état 76
@@ -1040,7 +1040,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 75
 
-   34 expr: expr tADD • expr
+   34 expr: expr tADD . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1055,7 +1055,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 76
 
-   35 expr: expr tSUB • expr
+   35 expr: expr tSUB . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1070,7 +1070,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 77
 
-   37 expr: expr tDIV • expr
+   37 expr: expr tDIV . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1085,7 +1085,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 78
 
-   36 expr: expr tMUL • expr
+   36 expr: expr tMUL . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1100,14 +1100,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 79
 
-   62 declar: tINT tID $@9 • tASSIGN $@10 expr
+   62 declar: tINT tID $@9 . tASSIGN $@10 expr
 
     tASSIGN  décalage et aller à l'état 102
 
 
 État 80
 
-   32 condins: ifheader tELSE $@6 • block
+   32 condins: ifheader tELSE $@6 . block
 
     tLBRACE  décalage et aller à l'état 21
 
@@ -1116,12 +1116,12 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 81
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   69 callparams_full: expr •
-   70                | expr • tCOMMA callparams_full
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   69 callparams_full: expr .
+   70                | expr . tCOMMA callparams_full
 
     tADD    décalage et aller à l'état 75
     tSUB    décalage et aller à l'état 76
@@ -1134,32 +1134,32 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 82
 
-   65 funccall: tID tLPAR $@11 callparams • tRPAR
+   65 funccall: tID tLPAR $@11 callparams . tRPAR
 
     tRPAR  décalage et aller à l'état 105
 
 
 État 83
 
-   66 callparams: callparams_void •
+   66 callparams: callparams_void .
 
     $défaut  réduction par utilisation de la règle 66 (callparams)
 
 
 État 84
 
-   67 callparams: callparams_full •
+   67 callparams: callparams_full .
 
     $défaut  réduction par utilisation de la règle 67 (callparams)
 
 
 État 85
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   45 condition: tNOT expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   45 condition: tNOT expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1171,7 +1171,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 86
 
-   46 condition: expr tLT • expr
+   46 condition: expr tLT . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1186,7 +1186,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 87
 
-   47 condition: expr tLE • expr
+   47 condition: expr tLE . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1201,7 +1201,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 88
 
-   48 condition: expr tGT • expr
+   48 condition: expr tGT . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1216,7 +1216,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 89
 
-   49 condition: expr tGE • expr
+   49 condition: expr tGE . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1231,7 +1231,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 90
 
-   52 condition: expr tEQ • expr
+   52 condition: expr tEQ . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1246,7 +1246,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 91
 
-   53 condition: expr tNEQ • expr
+   53 condition: expr tNEQ . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1261,7 +1261,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 92
 
-   51 condition: expr tAND • expr
+   51 condition: expr tAND . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1276,7 +1276,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 93
 
-   50 condition: expr tOR • expr
+   50 condition: expr tOR . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1291,7 +1291,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 94
 
-   29 ifheader: tIF tLPAR condition tRPAR • $@5 block
+   29 ifheader: tIF tLPAR condition tRPAR . $@5 block
 
     $défaut  réduction par utilisation de la règle 28 ($@5)
 
@@ -1300,7 +1300,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 95
 
-   56 loop: tWHILE $@7 tLPAR condition • $@8 tRPAR block
+   56 loop: tWHILE $@7 tLPAR condition . $@8 tRPAR block
 
     $défaut  réduction par utilisation de la règle 55 ($@8)
 
@@ -1309,25 +1309,25 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 96
 
-   57 print: tPRINT tLPAR expr tRPAR •
+   57 print: tPRINT tLPAR expr tRPAR .
 
     $défaut  réduction par utilisation de la règle 57 (print)
 
 
 État 97
 
-   38 expr: tLPAR expr tRPAR •
+   38 expr: tLPAR expr tRPAR .
 
     $défaut  réduction par utilisation de la règle 38 (expr)
 
 
 État 98
 
-   34 expr: expr • tADD expr
-   34     | expr tADD expr •
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
+   34 expr: expr . tADD expr
+   34     | expr tADD expr .
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
 
     tDIV  décalage et aller à l'état 77
     tMUL  décalage et aller à l'état 78
@@ -1337,11 +1337,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 99
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   35     | expr tSUB expr •
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   35     | expr tSUB expr .
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
 
     tDIV  décalage et aller à l'état 77
     tMUL  décalage et aller à l'état 78
@@ -1351,29 +1351,29 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 100
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   37     | expr tDIV expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   37     | expr tDIV expr .
 
     $défaut  réduction par utilisation de la règle 37 (expr)
 
 
 État 101
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   36     | expr tMUL expr •
-   37     | expr • tDIV expr
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   36     | expr tMUL expr .
+   37     | expr . tDIV expr
 
     $défaut  réduction par utilisation de la règle 36 (expr)
 
 
 État 102
 
-   62 declar: tINT tID $@9 tASSIGN • $@10 expr
+   62 declar: tINT tID $@9 tASSIGN . $@10 expr
 
     $défaut  réduction par utilisation de la règle 61 ($@10)
 
@@ -1382,14 +1382,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 103
 
-   32 condins: ifheader tELSE $@6 block •
+   32 condins: ifheader tELSE $@6 block .
 
     $défaut  réduction par utilisation de la règle 32 (condins)
 
 
 État 104
 
-   70 callparams_full: expr tCOMMA • callparams_full
+   70 callparams_full: expr tCOMMA . callparams_full
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1405,18 +1405,18 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 105
 
-   65 funccall: tID tLPAR $@11 callparams tRPAR •
+   65 funccall: tID tLPAR $@11 callparams tRPAR .
 
     $défaut  réduction par utilisation de la règle 65 (funccall)
 
 
 État 106
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   46 condition: expr tLT expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   46 condition: expr tLT expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1428,11 +1428,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 107
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   47 condition: expr tLE expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   47 condition: expr tLE expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1444,11 +1444,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 108
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   48 condition: expr tGT expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   48 condition: expr tGT expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1460,11 +1460,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 109
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   49 condition: expr tGE expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   49 condition: expr tGE expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1476,11 +1476,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 110
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   52 condition: expr tEQ expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   52 condition: expr tEQ expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1492,11 +1492,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 111
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   53 condition: expr tNEQ expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   53 condition: expr tNEQ expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1508,11 +1508,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 112
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   51 condition: expr tAND expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   51 condition: expr tAND expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1524,11 +1524,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 113
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   50 condition: expr tOR expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   50 condition: expr tOR expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1540,7 +1540,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 114
 
-   29 ifheader: tIF tLPAR condition tRPAR $@5 • block
+   29 ifheader: tIF tLPAR condition tRPAR $@5 . block
 
     tLBRACE  décalage et aller à l'état 21
 
@@ -1549,14 +1549,14 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 115
 
-   56 loop: tWHILE $@7 tLPAR condition $@8 • tRPAR block
+   56 loop: tWHILE $@7 tLPAR condition $@8 . tRPAR block
 
     tRPAR  décalage et aller à l'état 119
 
 
 État 116
 
-   62 declar: tINT tID $@9 tASSIGN $@10 • expr
+   62 declar: tINT tID $@9 tASSIGN $@10 . expr
 
     tID    décalage et aller à l'état 48
     tNB    décalage et aller à l'état 49
@@ -1571,21 +1571,21 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 117
 
-   70 callparams_full: expr tCOMMA callparams_full •
+   70 callparams_full: expr tCOMMA callparams_full .
 
     $défaut  réduction par utilisation de la règle 70 (callparams_full)
 
 
 État 118
 
-   29 ifheader: tIF tLPAR condition tRPAR $@5 block •
+   29 ifheader: tIF tLPAR condition tRPAR $@5 block .
 
     $défaut  réduction par utilisation de la règle 29 (ifheader)
 
 
 État 119
 
-   56 loop: tWHILE $@7 tLPAR condition $@8 tRPAR • block
+   56 loop: tWHILE $@7 tLPAR condition $@8 tRPAR . block
 
     tLBRACE  décalage et aller à l'état 21
 
@@ -1594,11 +1594,11 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 120
 
-   34 expr: expr • tADD expr
-   35     | expr • tSUB expr
-   36     | expr • tMUL expr
-   37     | expr • tDIV expr
-   62 declar: tINT tID $@9 tASSIGN $@10 expr •
+   34 expr: expr . tADD expr
+   35     | expr . tSUB expr
+   36     | expr . tMUL expr
+   37     | expr . tDIV expr
+   62 declar: tINT tID $@9 tASSIGN $@10 expr .
 
     tADD  décalage et aller à l'état 75
     tSUB  décalage et aller à l'état 76
@@ -1610,6 +1610,6 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 121
 
-   56 loop: tWHILE $@7 tLPAR condition $@8 tRPAR block •
+   56 loop: tWHILE $@7 tLPAR condition $@8 tRPAR block .
 
     $défaut  réduction par utilisation de la règle 56 (loop)

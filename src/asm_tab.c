@@ -8,30 +8,9 @@ static int push_value = -1;
 
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-static char op_to_str[30][5] = {"AFF", "COP", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", 
+static char op_to_str[30][5] = {"AFF", "ADD", "SUB", "MUL", "DIV", "B", "NIL", "CMP", "BEQ", "BNE", "RET", 
                                 "PSH", "POP", "BF", "STR", "LDR", "BN", "BNZ", "BP", "BSP"};
-/*
-INIT VAR a=V : 
-    {add_sym} + AFF last V
-    COP a last 
 
-    =>  {add_sym} + AFF Rx V + STR Rx last
-        LDR Rx last + STR Rx a + {remove_last}
-
-ADDITION a=a+b : 
-    {add_sym} + COP last a
-    {add_sym} + COP last b
-    ADD next_last next_last last + {remove_last}
-    COP a M_last + {remove_last}
-
-    =>  {add_sym} + LDR Rx a + STR Rx last
-        {add_sym} + LDR Ry b + STR Ry last
-        LDR Rx last + LDR Ry next_last + ADD Rx Rx Ry + STR Rx next_last + {remove_last}
-        LDR Rx last + STR Rx a + {remove_last}
-
-    expr, term, condition, assign, declar, funcreturn
-    remove dans condition !!
-*/
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.
 static int tab_asm[1024][5];

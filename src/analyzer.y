@@ -8,26 +8,25 @@
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
 #define ASM_AFF 0
-#define ASM_COP 1
-#define ASM_ADD 2
-#define ASM_SUB 3
-#define ASM_MUL 4
-#define ASM_DIV 5
-#define ASM_B 6
-#define ASM_NIL 7
-#define ASM_CMP 8
-#define ASM_BEQ 9
-#define ASM_BNE 10
-#define ASM_RET 11
-#define ASM_PSH 12
-#define ASM_POP 13
-#define ASM_BF 14
-#define ASM_STR 15
-#define ASM_LDR 16
-#define ASM_BN 17
-#define ASM_BNZ 18
-#define ASM_BP 19
-#define ASM_BSP 20
+#define ASM_ADD 1
+#define ASM_SUB 2
+#define ASM_MUL 3
+#define ASM_DIV 4
+#define ASM_B 5
+#define ASM_NIL 6
+#define ASM_CMP 7
+#define ASM_BEQ 8
+#define ASM_BNE 9
+#define ASM_RET 10
+#define ASM_PSH 11
+#define ASM_POP 12
+#define ASM_BF 13
+#define ASM_STR 14
+#define ASM_LDR 15
+#define ASM_BN 16
+#define ASM_BNZ 17
+#define ASM_BP 18
+#define ASM_BSP 19
 %}
 
 %code provides {
@@ -70,7 +69,12 @@ functions:
   ;
 
 function:
-    type tID tLPAR {sym_inc_depth(); sym_add("?ADDR"); sym_add("?VAL");} params tRPAR {fun_add($2, asm_current(), $1);} block {asm_add(ASM_RET, 0, NIL, NIL, 1); sym_clear();}
+    type tID tLPAR {sym_inc_depth(); sym_add("?ADDR");
+                    sym_add("?VAL");}
+
+    params tRPAR {fun_add($2, asm_current(), $1);} 
+    
+    block {asm_add(ASM_RET, 0, NIL, NIL, 1); sym_clear();}
   ;
 
 type:
@@ -117,9 +121,10 @@ instruction:
 ifheader: 
   tIF tLPAR condition tRPAR  {$1.branch_line = asm_current()-1;
                               $1.was_and = $3;
-                              $1.and_branch_line = asm_current()-3;}
+                              $1.and_branch_line = asm_current()-5;}
                               
   block {$1.end = asm_current();
+        $$.was_and = $1.was_and;
         $$.end = $1.end;
         $$.branch_line = $1.branch_line;
         asm_update($1.branch_line, 1, $1.end); 
@@ -299,7 +304,7 @@ condition:
 loop:
     tWHILE {$1.begin = asm_current();} 
     tLPAR condition { $1.branch_line = asm_current()-1;
-                      $1.and_branch_line = asm_current()-3;}
+                      $1.and_branch_line = asm_current()-5;}
 
     tRPAR block {asm_add(ASM_B, $1.begin, NIL, NIL, 1);
                 $1.end = asm_current();
@@ -339,14 +344,20 @@ funcreturn:
 
 funccall:
     tID tLPAR {asm_set_push(sym_last()+1);
-               sym_add("!ADDR"); sym_add("!VAL");} callparams tRPAR {asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
-                                                                     asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
-                                                                     asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
-                                                                     asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);
-                                                                     asm_add(ASM_STR, 0, sym_get_addr("!ADDR"), NIL, 2);
-                                                                     sym_remove_lasts(sym_last()+1 - asm_push());
-                                                                     sym_add("_");}
-  ;
+               sym_add("!ADDR"); sym_add("!VAL");} 
+    
+    callparams tRPAR {if (fun_is_void($1))
+                      {printf("error: function %s has no return value", $1);
+                       exit(-1);}
+      
+                      asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
+                      asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
+                      asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
+                      asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);
+                      asm_add(ASM_STR, 0, sym_get_addr("!ADDR"), NIL, 2);
+                      sym_remove_lasts(sym_last()+1 - asm_push());
+                      sym_add("_");}
+    ;
 
 callparams:
     callparams_void

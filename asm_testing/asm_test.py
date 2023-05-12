@@ -102,6 +102,26 @@ def main() :
 			# LDR [R] [M]
 			elif opcode == "LDR":
 				reg[int(ins[1])] = stack[sp + int(ins[2])]
+			
+			# BN [I]
+			elif opcode == "BN":
+				if flags[0] == 1:
+					i = int(ins[1])-1
+
+			# BNZ [I]
+			elif opcode == "BNZ":
+				if flags[0] == 1 or flags[1] == 1:
+					i = int(ins[1])-1
+
+			# BP [I]
+			elif opcode == "BP":
+				if flags[0] == 0:
+					i = int(ins[1])-1
+
+			# BSP [I]
+			elif opcode == "BSP":
+				if flags[0] == 0 and flags[1] == 0:
+					i = int(ins[1])-1
 							 
 
 		i+=1
