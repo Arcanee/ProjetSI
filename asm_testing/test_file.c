@@ -3,16 +3,7 @@
 
 */
 
-int f() {return 34;}
-
 int main()
 {
-    if (f() > 24)
-    {
-        return 34;
-    }
-    else
-    {
-        return 78;
-    }
+    return 9999999;
 }

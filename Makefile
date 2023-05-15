@@ -4,7 +4,8 @@ analyzer:
 
 test: analyzer
 	cat asm_testing/test_file.c | bin/analyzer > asm_testing/asm_output && \
-	python3 asm_testing/asm_test.py
+	python3 asm_testing/asm_test.py && \
+	python3 asm_testing/bin_translator.py
 
 
 

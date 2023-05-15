@@ -7,26 +7,28 @@
 
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
-#define ASM_AFF 0
-#define ASM_ADD 1
-#define ASM_SUB 2
-#define ASM_MUL 3
-#define ASM_DIV 4
-#define ASM_B 5
-#define ASM_NIL 6
+#define ASM_NULL 0
+#define ASM_AFF 1
+#define ASM_COP 2
+#define ASM_ADD 3
+#define ASM_SUB 4
+#define ASM_MUL 5
+#define ASM_DIV 6
 #define ASM_CMP 7
-#define ASM_BEQ 8
-#define ASM_BNE 9
-#define ASM_RET 10
-#define ASM_PSH 11
-#define ASM_POP 12
-#define ASM_BF 13
-#define ASM_STR 14
-#define ASM_LDR 15
-#define ASM_BN 16
-#define ASM_BNZ 17
-#define ASM_BP 18
-#define ASM_BSP 19
+#define ASM_B 8
+#define ASM_BEQ 9
+#define ASM_BNE 10
+#define ASM_BN 11
+#define ASM_BNZ 12
+#define ASM_BP 13
+#define ASM_BSP 14
+#define ASM_BF 15
+#define ASM_RET 16
+#define ASM_PUSH 17
+#define ASM_POP 18
+#define ASM_STR 19
+#define ASM_LDR 20
+
 %}
 
 %code provides {
@@ -354,7 +356,7 @@ funccall:
     tID tLPAR {asm_set_push(sym_last()+1);
                sym_add("!ADDR"); sym_add("!VAL");} 
     
-    callparams tRPAR {asm_add(ASM_PSH, asm_push(), NIL, NIL, 1);
+    callparams tRPAR {asm_add(ASM_PUSH, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
                       asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);

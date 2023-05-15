@@ -1,4 +1,4 @@
-def main() : 
+def main(): 
 	print()
 	asm = []
 	stack = [-1,0,0,0,0,0,0,0]
@@ -14,11 +14,11 @@ def main() :
 	print("See all instructions in file 'asm_output'")
 	print()
 
-# Possible instructions : AFF, COP, ADD, SUB, MUL, DIV, B, NIL, CMP, BEQ, BNE, RET, PSH, POP, BF, STR, LDR
-# R is for register number
-# V is for numerical value
-# M is for memory stack addr
-# I is for intruction number
+	# Possible instructions : AFF, COP, ADD, SUB, MUL, DIV, B, NIL, CMP, BEQ, BNE, RET, PSH, POP, BF, STR, LDR
+	# R is for register number
+	# V is for numerical value
+	# M is for memory stack addr
+	# I is for intruction number
 
 	i = 0
 	while i < len(asm) :
