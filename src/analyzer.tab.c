@@ -78,7 +78,7 @@
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
 #define ASM_NULL 0
-#define ASM_AFF 1
+#define ASM_AFF 1 // Reg, Val
 #define ASM_COP 2
 #define ASM_ADD 3
 #define ASM_SUB 4
@@ -96,8 +96,8 @@
 #define ASM_RET 16
 #define ASM_PUSH 17
 #define ASM_POP 18
-#define ASM_STR 19
-#define ASM_LDR 20
+#define ASM_STR 19 // Mem, Reg
+#define ASM_LDR 20 // Mem, Reg
 
 
 #line 104 "analyzer.tab.c"
@@ -1325,40 +1325,40 @@ yyreduce:
 
   case 35: /* expr: expr tADD expr  */
 #line 165 "analyzer.y"
-                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_ADD, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 #line 1334 "analyzer.tab.c"
     break;
 
   case 36: /* expr: expr tSUB expr  */
 #line 171 "analyzer.y"
-                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_SUB, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 #line 1344 "analyzer.tab.c"
     break;
 
   case 37: /* expr: expr tMUL expr  */
 #line 177 "analyzer.y"
-                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_MUL, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 #line 1354 "analyzer.tab.c"
     break;
 
   case 38: /* expr: expr tDIV expr  */
 #line 183 "analyzer.y"
-                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_DIV, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 #line 1364 "analyzer.tab.c"
     break;
@@ -1367,11 +1367,11 @@ yyreduce:
 #line 191 "analyzer.y"
               {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
-               asm_add(ASM_STR, 0, sym_last(), NIL, 2);
-               asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-               asm_add(ASM_LDR, 1, sym_next_last(), NIL, 2);
+               asm_add(ASM_STR, sym_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_next_last(), 1, NIL, 2);
                asm_add(ASM_SUB, 0, 0, 1, 3);
-               asm_add(ASM_STR, 0, sym_next_last(), NIL, 2);
+               asm_add(ASM_STR, sym_next_last(), 0, NIL, 2);
                sym_remove_last();}
 #line 1377 "analyzer.tab.c"
     break;
@@ -1379,8 +1379,8 @@ yyreduce:
   case 42: /* term: tID  */
 #line 202 "analyzer.y"
         {sym_add("_");
-         asm_add(ASM_LDR, 0, sym_get_addr((yyvsp[0].s)), NIL, 2); 
-         asm_add(ASM_STR, 0, sym_last(), NIL, 2); }
+         asm_add(ASM_LDR, sym_get_addr((yyvsp[0].s)), 0, NIL, 2); 
+         asm_add(ASM_STR, sym_last(), 0, NIL, 2); }
 #line 1385 "analyzer.tab.c"
     break;
 
@@ -1388,7 +1388,7 @@ yyreduce:
 #line 205 "analyzer.y"
         {sym_add("_"); 
          asm_add(ASM_AFF, 0, (yyvsp[0].i), NIL, 2);
-         asm_add(ASM_STR, 0, sym_last(), NIL, 2);}
+         asm_add(ASM_STR, sym_last(), 0, NIL, 2);}
 #line 1393 "analyzer.tab.c"
     break;
 
@@ -1396,9 +1396,9 @@ yyreduce:
 #line 212 "analyzer.y"
          {sym_add("_"); 
           asm_add(ASM_AFF, 0, 0, NIL, 2);
-          asm_add(ASM_STR, 0, sym_last(), NIL, 2);
-          asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-          asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+          asm_add(ASM_STR, sym_last(), 0, NIL, 2);
+          asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+          asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
           asm_add(ASM_CMP, 0, 1, NIL, 2);
           asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
           sym_remove_last();
@@ -1411,9 +1411,9 @@ yyreduce:
 #line 223 "analyzer.y"
               {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
-               asm_add(ASM_STR, 0, sym_last(), NIL, 2);
-               asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-               asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+               asm_add(ASM_STR, sym_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                asm_add(ASM_CMP, 0, 1, NIL, 2);
                asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                sym_remove_last();
@@ -1424,8 +1424,8 @@ yyreduce:
 
   case 47: /* condition: expr tLT expr  */
 #line 235 "analyzer.y"
-                  {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BP, NIL, NIL, NIL, 1); //0 is considered positive
                    sym_remove_last();
@@ -1436,8 +1436,8 @@ yyreduce:
 
   case 48: /* condition: expr tLE expr  */
 #line 243 "analyzer.y"
-                  {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BSP, NIL, NIL, NIL, 1);
                    sym_remove_last();
@@ -1448,8 +1448,8 @@ yyreduce:
 
   case 49: /* condition: expr tGT expr  */
 #line 251 "analyzer.y"
-                  {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNZ, NIL, NIL, NIL, 1);
                    sym_remove_last();
@@ -1460,8 +1460,8 @@ yyreduce:
 
   case 50: /* condition: expr tGE expr  */
 #line 259 "analyzer.y"
-                  {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BN, NIL, NIL, NIL, 1);
                    sym_remove_last();
@@ -1472,16 +1472,16 @@ yyreduce:
 
   case 51: /* condition: expr tOR expr  */
 #line 267 "analyzer.y"
-                  {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
+                  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e1 & 0
                    sym_add("_");
                    asm_add(ASM_AFF, 1, 0, NIL, 2);
-                   asm_add(ASM_STR, 1, sym_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_STR, sym_last(), 1, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNE, asm_current()+3, NIL, NIL, 1);
 
-                   asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e2 & 0
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e2 & 0
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
@@ -1494,16 +1494,16 @@ yyreduce:
 
   case 52: /* condition: expr tAND expr  */
 #line 285 "analyzer.y"
-                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
+                   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e1 & 0
                     sym_add("_");
                     asm_add(ASM_AFF, 1, 0, NIL, 2);
-                    asm_add(ASM_STR, 1, sym_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_STR, sym_last(), 1, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
-                    asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e2 & 0
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e2 & 0
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
@@ -1516,8 +1516,8 @@ yyreduce:
 
   case 53: /* condition: expr tEQ expr  */
 #line 303 "analyzer.y"
-                  {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                    sym_remove_last();
@@ -1528,8 +1528,8 @@ yyreduce:
 
   case 54: /* condition: expr tNEQ expr  */
 #line 311 "analyzer.y"
-                   {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
                     sym_remove_last();
@@ -1563,8 +1563,8 @@ yyreduce:
   case 59: /* assign: tID tASSIGN expr  */
 #line 335 "analyzer.y"
                      {sym_set_init((yyvsp[-2].s)); 
-                      asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-                      asm_add(ASM_STR, 0, sym_get_addr((yyvsp[-2].s)), NIL, 2);  
+                      asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                      asm_add(ASM_STR, sym_get_addr((yyvsp[-2].s)), 0, NIL, 2);  
                       sym_remove_last();}
 #line 1570 "analyzer.tab.c"
     break;
@@ -1589,16 +1589,16 @@ yyreduce:
 
   case 63: /* declar: tINT tID $@5 tASSIGN $@6 expr  */
 #line 343 "analyzer.y"
-                                                             {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-                                                              asm_add(ASM_STR, 0, sym_get_addr((yyvsp[-4].s)), NIL, 2); 
+                                                             {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                                                              asm_add(ASM_STR, sym_get_addr((yyvsp[-4].s)), 0, NIL, 2); 
                                                               sym_remove_last();}
 #line 1596 "analyzer.tab.c"
     break;
 
   case 64: /* funcreturn: tRETURN expr  */
 #line 349 "analyzer.y"
-                 {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-                  asm_add(ASM_STR, 0, sym_get_addr("?VAL"), NIL, 2); 
+                 {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                  asm_add(ASM_STR, sym_get_addr("?VAL"), 0, NIL, 2); 
                   sym_remove_last();
                   asm_add(ASM_RET, 0, NIL, NIL, 1);}
 #line 1605 "analyzer.tab.c"
@@ -1616,8 +1616,8 @@ yyreduce:
                      {asm_add(ASM_PUSH, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_BF, fun_get_addr((yyvsp[-4].s)), NIL, NIL, 1);
                       asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
-                      asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);
-                      asm_add(ASM_STR, 0, sym_get_addr("!ADDR"), NIL, 2);
+                      asm_add(ASM_LDR, sym_get_addr("!VAL"), 0, NIL, 2);
+                      asm_add(ASM_STR, sym_get_addr("!ADDR"), 0, NIL, 2);
                       sym_remove_lasts(sym_last()+1 - asm_push());
                       sym_add("_");}
 #line 1624 "analyzer.tab.c"

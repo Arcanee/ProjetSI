@@ -1,9 +1,9 @@
 -1 - [START OF PROGRAM]
 0 - B 1 
 1 - AFF 0 9999999 
-2 - STR 0 2 
-3 - LDR 0 2 
-4 - STR 0 1 
+2 - STR 2 0 
+3 - LDR 2 0 
+4 - STR 1 0 
 5 - RET 0 
 6 - RET 0 
 7 - [END OF PROGRAM]

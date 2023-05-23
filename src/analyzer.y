@@ -8,7 +8,7 @@
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
 #define ASM_NULL 0
-#define ASM_AFF 1
+#define ASM_AFF 1 // Reg, Val
 #define ASM_COP 2
 #define ASM_ADD 3
 #define ASM_SUB 4
@@ -26,8 +26,8 @@
 #define ASM_RET 16
 #define ASM_PUSH 17
 #define ASM_POP 18
-#define ASM_STR 19
-#define ASM_LDR 20
+#define ASM_STR 19 // Mem, Reg
+#define ASM_LDR 20 // Mem, Reg
 
 %}
 
@@ -162,58 +162,58 @@ condins:
 
 expr:
     term
-  | expr tADD expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tADD expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_ADD, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 
-  | expr tSUB expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tSUB expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_SUB, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 
-  | expr tMUL expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tMUL expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_MUL, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 
-  | expr tDIV expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tDIV expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_DIV, 0, 0, 1, 3);
-                    asm_add(ASM_STR, 0, sym_next_last(), NIL, 2); 
+                    asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
 
   | tLPAR expr tRPAR
   | tADD expr
   | tSUB expr {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
-               asm_add(ASM_STR, 0, sym_last(), NIL, 2);
-               asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-               asm_add(ASM_LDR, 1, sym_next_last(), NIL, 2);
+               asm_add(ASM_STR, sym_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_next_last(), 1, NIL, 2);
                asm_add(ASM_SUB, 0, 0, 1, 3);
-               asm_add(ASM_STR, 0, sym_next_last(), NIL, 2);
+               asm_add(ASM_STR, sym_next_last(), 0, NIL, 2);
                sym_remove_last();}
   ;
 
 term:
     tID {sym_add("_");
-         asm_add(ASM_LDR, 0, sym_get_addr($1), NIL, 2); 
-         asm_add(ASM_STR, 0, sym_last(), NIL, 2); }
+         asm_add(ASM_LDR, sym_get_addr($1), 0, NIL, 2); 
+         asm_add(ASM_STR, sym_last(), 0, NIL, 2); }
   | tNB {sym_add("_"); 
          asm_add(ASM_AFF, 0, $1, NIL, 2);
-         asm_add(ASM_STR, 0, sym_last(), NIL, 2);}
+         asm_add(ASM_STR, sym_last(), 0, NIL, 2);}
   | funccall
   ;
 
 condition:
     expr {sym_add("_"); 
           asm_add(ASM_AFF, 0, 0, NIL, 2);
-          asm_add(ASM_STR, 0, sym_last(), NIL, 2);
-          asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-          asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+          asm_add(ASM_STR, sym_last(), 0, NIL, 2);
+          asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+          asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
           asm_add(ASM_CMP, 0, 1, NIL, 2);
           asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
           sym_remove_last();
@@ -222,9 +222,9 @@ condition:
          
   | tNOT expr {sym_add("_"); 
                asm_add(ASM_AFF, 0, 0, NIL, 2);
-               asm_add(ASM_STR, 0, sym_last(), NIL, 2);
-               asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-               asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+               asm_add(ASM_STR, sym_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+               asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                asm_add(ASM_CMP, 0, 1, NIL, 2);
                asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                sym_remove_last();
@@ -232,48 +232,48 @@ condition:
                $$ = 0;}
 
   
-  | expr tLT expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tLT expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BP, NIL, NIL, NIL, 1); //0 is considered positive
                    sym_remove_last();
                    sym_remove_last();
                    $$ = 0;}
 
-  | expr tLE expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tLE expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BSP, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
                    $$ = 0;}
 
-  | expr tGT expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tGT expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNZ, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
                    $$ = 0;}
 
-  | expr tGE expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tGE expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BN, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
                    $$ = 0;}
 
-  | expr tOR expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
+  | expr tOR expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e1 & 0
                    sym_add("_");
                    asm_add(ASM_AFF, 1, 0, NIL, 2);
-                   asm_add(ASM_STR, 1, sym_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_STR, sym_last(), 1, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNE, asm_current()+3, NIL, NIL, 1);
 
-                   asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e2 & 0
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                   asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e2 & 0
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
@@ -282,16 +282,16 @@ condition:
                    sym_remove_last();
                    $$ = 0;}
 
-  | expr tAND expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e1 & 0
+  | expr tAND expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e1 & 0
                     sym_add("_");
                     asm_add(ASM_AFF, 1, 0, NIL, 2);
-                    asm_add(ASM_STR, 1, sym_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_STR, sym_last(), 1, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
-                    asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2); //CMP e2 & 0
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+                    asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e2 & 0
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
@@ -300,16 +300,16 @@ condition:
                     sym_remove_last();
                     $$ = 1;}
 
-  | expr tEQ expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                   asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tEQ expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                   asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_CMP, 0, 1, NIL, 2);
                    asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
                    $$ = 0;}
 
-  | expr tNEQ expr {asm_add(ASM_LDR, 0, sym_next_last(), NIL, 2);
-                    asm_add(ASM_LDR, 1, sym_last(), NIL, 2);
+  | expr tNEQ expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_CMP, 0, 1, NIL, 2);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
                     sym_remove_last();
@@ -333,21 +333,21 @@ print:
 
 assign:
     tID tASSIGN expr {sym_set_init($1); 
-                      asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-                      asm_add(ASM_STR, 0, sym_get_addr($1), NIL, 2);  
+                      asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                      asm_add(ASM_STR, sym_get_addr($1), 0, NIL, 2);  
                       sym_remove_last();} 
   ;
 
 declar:
     tINT tID {sym_add($2);}
-  | tINT tID {sym_add($2);} tASSIGN {sym_set_init($2);} expr {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-                                                              asm_add(ASM_STR, 0, sym_get_addr($2), NIL, 2); 
+  | tINT tID {sym_add($2);} tASSIGN {sym_set_init($2);} expr {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                                                              asm_add(ASM_STR, sym_get_addr($2), 0, NIL, 2); 
                                                               sym_remove_last();}
   ;
 
 funcreturn:
-    tRETURN expr {asm_add(ASM_LDR, 0, sym_last(), NIL, 2);
-                  asm_add(ASM_STR, 0, sym_get_addr("?VAL"), NIL, 2); 
+    tRETURN expr {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                  asm_add(ASM_STR, sym_get_addr("?VAL"), 0, NIL, 2); 
                   sym_remove_last();
                   asm_add(ASM_RET, 0, NIL, NIL, 1);}
   ;
@@ -359,8 +359,8 @@ funccall:
     callparams tRPAR {asm_add(ASM_PUSH, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
                       asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
-                      asm_add(ASM_LDR, 0, sym_get_addr("!VAL"), NIL, 2);
-                      asm_add(ASM_STR, 0, sym_get_addr("!ADDR"), NIL, 2);
+                      asm_add(ASM_LDR, sym_get_addr("!VAL"), 0, NIL, 2);
+                      asm_add(ASM_STR, sym_get_addr("!ADDR"), 0, NIL, 2);
                       sym_remove_lasts(sym_last()+1 - asm_push());
                       sym_add("_");}
     ;

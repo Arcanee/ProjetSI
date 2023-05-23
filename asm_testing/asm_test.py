@@ -97,11 +97,11 @@ def main():
 			
 			# STR [R] [M]
 			elif opcode == "STR":
-				stack[sp + int(ins[2])] = reg[int(ins[1])]
+				stack[sp + int(ins[1])] = reg[int(ins[2])]
 			
 			# LDR [R] [M]
 			elif opcode == "LDR":
-				reg[int(ins[1])] = stack[sp + int(ins[2])]
+				reg[int(ins[2])] = stack[sp + int(ins[1])]
 			
 			# BN [I]
 			elif opcode == "BN":
