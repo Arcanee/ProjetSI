@@ -214,7 +214,7 @@ condition:
           asm_add(ASM_STR, sym_last(), 0, NIL, 2);
           asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
           asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-          asm_add(ASM_CMP, 0, 1, NIL, 2);
+          asm_add(ASM_CMP, 0, 0, 1, 3);
           asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
           sym_remove_last();
           sym_remove_last(); // (expr) <=> (expr != 0)
@@ -225,7 +225,7 @@ condition:
                asm_add(ASM_STR, sym_last(), 0, NIL, 2);
                asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-               asm_add(ASM_CMP, 0, 1, NIL, 2);
+               asm_add(ASM_CMP, 0, 0, 1, 3);
                asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                sym_remove_last();
                sym_remove_last(); // (!expr) <=> (expr == 0)
@@ -234,7 +234,7 @@ condition:
   
   | expr tLT expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BP, NIL, NIL, NIL, 1); //0 is considered positive
                    sym_remove_last();
                    sym_remove_last();
@@ -242,7 +242,7 @@ condition:
 
   | expr tLE expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BSP, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
@@ -250,7 +250,7 @@ condition:
 
   | expr tGT expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BNZ, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
@@ -258,7 +258,7 @@ condition:
 
   | expr tGE expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BN, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
@@ -269,12 +269,12 @@ condition:
                    asm_add(ASM_AFF, 1, 0, NIL, 2);
                    asm_add(ASM_STR, sym_last(), 1, NIL, 2);
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BNE, asm_current()+3, NIL, NIL, 1);
 
                    asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e2 & 0
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
                    sym_remove_last(); //remove 0, e2, e1
@@ -287,12 +287,12 @@ condition:
                     asm_add(ASM_AFF, 1, 0, NIL, 2);
                     asm_add(ASM_STR, sym_last(), 1, NIL, 2);
                     asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                    asm_add(ASM_CMP, 0, 1, NIL, 2);
+                    asm_add(ASM_CMP, 0, 0, 1, 3);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
                     asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2); //CMP e2 & 0
                     asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                    asm_add(ASM_CMP, 0, 1, NIL, 2);
+                    asm_add(ASM_CMP, 0, 0, 1, 3);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
 
                     sym_remove_last(); //remove 0, e2, e1
@@ -302,7 +302,7 @@ condition:
 
   | expr tEQ expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                    asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                   asm_add(ASM_CMP, 0, 1, NIL, 2);
+                   asm_add(ASM_CMP, 0, 0, 1, 3);
                    asm_add(ASM_BNE, NIL, NIL, NIL, 1);
                    sym_remove_last();
                    sym_remove_last();
@@ -310,7 +310,7 @@ condition:
 
   | expr tNEQ expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
                     asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
-                    asm_add(ASM_CMP, 0, 1, NIL, 2);
+                    asm_add(ASM_CMP, 0, 0, 1, 3);
                     asm_add(ASM_BEQ, NIL, NIL, NIL, 1);
                     sym_remove_last();
                     sym_remove_last();

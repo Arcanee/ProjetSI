@@ -62,9 +62,9 @@ def main():
 			elif opcode == "B": 
 				i = int(ins[1])-1
 			
-			# CMP [R] [R]
+			# CMP [R] [R] [R]
 			elif opcode == "CMP":
-				res = reg[int(ins[1])] - reg[int(ins[2])]
+				res = reg[int(ins[2])] - reg[int(ins[3])]
 				flags[0] = int(res < 0)
 				flags[1] = int(res == 0)
 			

@@ -9,4 +9,4 @@ lex.yy.c: analyzer.l analyzer.tab.h
 
 .PHONY: clean
 clean:
-	rm -f ../bin/analyzer analyzer.tab.h analyzer.tab.c lex.yy.c analyzer.output
+	rm -f ../bin/analyzer ../bin/bin_output ../asm_testing/asm_output analyzer.tab.h analyzer.tab.c lex.yy.c analyzer.output
