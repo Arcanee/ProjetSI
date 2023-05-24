@@ -357,7 +357,9 @@ funccall:
                sym_add("!ADDR"); sym_add("!VAL");} 
     
     callparams tRPAR {asm_add(ASM_PUSH, asm_push(), NIL, NIL, 1);
-                      asm_add(ASM_BF, fun_get_addr($1), NIL, NIL, 1);
+                      asm_add(ASM_AFF, 0, asm_current()+3, NIL, 2);
+                      asm_add(ASM_STR, 0, 0, NIL, 2);
+                      asm_add(ASM_B, fun_get_addr($1), NIL, NIL, 1);
                       asm_add(ASM_POP, asm_push(), NIL, NIL, 1);
                       asm_add(ASM_LDR, sym_get_addr("!VAL"), 0, NIL, 2);
                       asm_add(ASM_STR, sym_get_addr("!ADDR"), 0, NIL, 2);
@@ -388,6 +390,8 @@ void yyerror(const char *msg) {
 
 int main(void) {
 
+  asm_add(ASM_AFF, 0, -1, NIL, 2);
+  asm_add(ASM_STR, 0, 0, NIL, 2);
   asm_add(ASM_B, NIL, NIL, NIL, 1);
 
   printf("-1 - [START OF PROGRAM]\n");
@@ -395,7 +399,7 @@ int main(void) {
   sym_init_tab();
   yyparse();
 
-  asm_update(0, 1, fun_get_addr("main"));
+  asm_update(2, 1, fun_get_addr("main"));
 
   asm_print_tab();
 }

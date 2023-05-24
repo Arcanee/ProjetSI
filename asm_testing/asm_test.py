@@ -1,7 +1,7 @@
 def main(): 
 	print()
 	asm = []
-	stack = [-1,0,0,0,0,0,0,0]
+	stack = [0,0,0,0,0,0,0,0]
 	reg = [0,0,0,0]
 	flags = [0,0,0,0] #Neg, Zero, Carry, Overflow
 	sp = 0
@@ -14,7 +14,7 @@ def main():
 	print("See all instructions in file 'asm_output'")
 	print()
 
-	# Possible instructions : AFF, COP, ADD, SUB, MUL, DIV, B, NIL, CMP, BEQ, BNE, RET, PSH, POP, BF, STR, LDR
+	# Possible instructions : AFF, COP, ADD, SUB, MUL, DIV, B, NIL, CMP, BEQ, BNE, RET, PUSH, POP, BF, STR, LDR
 	# R is for register number
 	# V is for numerical value
 	# M is for memory stack addr
@@ -83,7 +83,7 @@ def main():
 				i = stack[sp + int(ins[1])] - 1
 			
 			# PSH [V]
-			elif opcode == "PSH":
+			elif opcode == "PUSH":
 				sp += int(ins[1])
 			
 			# POP [V]
@@ -95,11 +95,11 @@ def main():
 				stack[sp] = i+1
 				i = int(ins[1])-1
 			
-			# STR [R] [M]
+			# STR [M] [R]
 			elif opcode == "STR":
 				stack[sp + int(ins[1])] = reg[int(ins[2])]
 			
-			# LDR [R] [M]
+			# LDR [M] [R]
 			elif opcode == "LDR":
 				reg[int(ins[2])] = stack[sp + int(ins[1])]
 			

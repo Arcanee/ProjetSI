@@ -1,9 +1,36 @@
 -1 - [START OF PROGRAM]
-0 - B 1 
-1 - AFF 0 9999999 
-2 - STR 2 0 
-3 - LDR 2 0 
-4 - STR 1 0 
-5 - RET 0 
-6 - RET 0 
-7 - [END OF PROGRAM]
+0 - AFF 0 -1 
+1 - STR 0 0 
+2 - B 9 
+3 - AFF 0 55 
+4 - STR 2 0 
+5 - LDR 2 0 
+6 - STR 1 0 
+7 - RET 0 
+8 - RET 0 
+9 - AFF 0 10 
+10 - STR 3 0 
+11 - LDR 3 0 
+12 - STR 2 0 
+13 - LDR 2 0 
+14 - STR 3 0 
+15 - PUSH 4 
+16 - AFF 0 19 
+17 - STR 0 0 
+18 - B 3 
+19 - POP 4 
+20 - LDR 5 0 
+21 - STR 4 0 
+22 - LDR 3 0 
+23 - LDR 4 1 
+24 - ADD 0 0 1 
+25 - STR 3 0 
+26 - LDR 3 0 
+27 - STR 2 0 
+28 - LDR 2 0 
+29 - STR 3 0 
+30 - LDR 3 0 
+31 - STR 1 0 
+32 - RET 0 
+33 - RET 0 
+34 - [END OF PROGRAM]
