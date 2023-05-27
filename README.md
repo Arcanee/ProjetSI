@@ -16,6 +16,7 @@ Dépôt du projet de compilateur flex/bison pour la 4 IR de l'INSA Toulouse.
 3. Retourner dans le dossier parent
 4. Exécuter la commande `make test` pour démarrer la simulation pas à pas du code assembleur généré
 5. L'entièreté du code assembleur généré se trouve dans le fichier _asm\_output_ du répertoire _asm\_testing_
+6. Le code binaire correspondant se trouve dans le fichier _bin\_output_ du répertoire _bin_
 
 ## Nettoyer le projet
 
