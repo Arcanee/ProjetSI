@@ -396,7 +396,7 @@ void yyerror(const char *msg) {
 
 int main(void) {
 
-  asm_add(ASM_AFF, 0, -1, NIL, 2);
+  asm_add(ASM_AFF, 0, 255, NIL, 2);
   asm_add(ASM_STR, 0, 0, NIL, 2);
   asm_add(ASM_B, NIL, NIL, NIL, 1);
 

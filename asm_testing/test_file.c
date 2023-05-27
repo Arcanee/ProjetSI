@@ -5,7 +5,6 @@
 
 int main()
 {
-    print(20 / 2);
-    int a = 4*8-2;
+    int a = 0xff;
     print(a);
 }

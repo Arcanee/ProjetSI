@@ -21,7 +21,7 @@
 
 [A-Za-z][A-Za-z0-9]*    {yylval.s = strdup(yytext); return tID;}
 
-"0x"[0-9A-Ea-e]+        {yylval.i = (int)strtol(yytext, NULL, 16); return tNB;}
+"0x"[0-9A-Fa-f]+        {yylval.i = (int)strtol(yytext, NULL, 16); return tNB;}
 [0-9]+                {yylval.i = atoi(yytext); return tNB;}
 
 "+"              {return tADD;}
