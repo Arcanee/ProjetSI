@@ -3,8 +3,9 @@ def main():
 	asm = []
 	stack = [0,0,0,0,0,0,0,0]
 	reg = [0,0,0,0]
-	flags = [0,0,0,0] #Neg, Zero, Carry, Overflow
+	flags = [0,0,0,0] # Neg, Zero, Carry, Overflow
 	sp = 0
+	print_info = [False, 0, "Printed value : "] # Do we print ? /// Value /// Text to display
 
 	with open("asm_testing/asm_output", "r") as f:
 		lines = f.readlines()
@@ -14,7 +15,8 @@ def main():
 	print("See all instructions in file 'asm_output'")
 	print()
 
-	# Possible instructions : AFF, COP, ADD, SUB, MUL, DIV, B, NIL, CMP, BEQ, BNE, RET, PUSH, POP, BF, STR, LDR
+	# Possible instructions : 	AFF, COP (not used), ADD, SUB, MUL, DIV, CMP, B, BEQ, BNE,
+	# 						  	BN, BNZ, BP, BSP, RET, PUSH, POP, STR, LDR, PRINT
 	# R is for register number
 	# V is for numerical value
 	# M is for memory stack addr
@@ -122,6 +124,11 @@ def main():
 			elif opcode == "BSP":
 				if flags[0] == 0 and flags[1] == 0:
 					i = int(ins[1])-1
+
+			# PRINT [R]
+			elif opcode == "PRINT":
+				print_info[0] = True
+				print_info[1] = reg[int(ins[1])]
 							 
 
 		i+=1
@@ -130,6 +137,9 @@ def main():
 		print("Flags :", flags)
 		print("Stack pointer :", sp)
 		print("Next : instruction", i)
+		if print_info[0]:
+			print(print_info[2], print_info[1])
+			print_info[0] = False
 		print()
 
 		

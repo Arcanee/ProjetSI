@@ -5,12 +5,7 @@
 
 int main()
 {
-    if (2 == 2)
-    {
-        return 10;
-    }
-    else
-    {
-        return 20;
-    }
+    print(20 / 2);
+    int a = 4*8-2;
+    print(a);
 }

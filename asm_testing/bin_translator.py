@@ -4,7 +4,7 @@ def main():
                 "MUL" : "05", "DIV" : "06", "CMP" : "07", "B" : "08", "BEQ" : "09",
                 "BNE" : "0a", "BN" : "0b", "BNZ" : "0c", "BP" : "0d", "BSP" : "0e",
                 "BF" : "0f", "RET" : "10", "PUSH" : "11", "POP" : "12", "STR" : "13",
-                "LDR" : "14"}
+                "LDR" : "14", "PRINT" : "15"}
 
     with open("asm_testing/asm_output", "r") as f_asm:
         lines = f_asm.readlines()

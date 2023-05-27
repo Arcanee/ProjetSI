@@ -7,9 +7,9 @@
 
 #define NIL -1 //Refers to a negligible parameter in the asm instruction table.
 
-#define ASM_NULL 0
+#define ASM_NULL 0 // For debugging
 #define ASM_AFF 1 // Reg, Val
-#define ASM_COP 2
+#define ASM_COP 2 // Not used anymore
 #define ASM_ADD 3
 #define ASM_SUB 4
 #define ASM_MUL 5
@@ -22,12 +22,16 @@
 #define ASM_BNZ 12
 #define ASM_BP 13
 #define ASM_BSP 14
-#define ASM_BF 15
+#define ASM_BF 15 // Not used anymore
 #define ASM_RET 16
 #define ASM_PUSH 17
 #define ASM_POP 18
-#define ASM_STR 19 // Mem, Reg
-#define ASM_LDR 20 // Mem, Reg
+#define ASM_STR 19 // Mem --> Reg
+#define ASM_LDR 20 // Mem --> Reg
+#define ASM_PRINT 21
+
+// Some opcodes are not used anymore. However, to keep a consistent order in the compiler,
+// interpreter and VHDL files, we kept all of them here.
 
 %}
 
@@ -329,7 +333,9 @@ loop:
   ;
 
 print:
-    tPRINT tLPAR expr tRPAR
+    tPRINT tLPAR expr tRPAR {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                             asm_add(ASM_PRINT, 0, NIL, NIL, 1);
+                             sym_remove_last();}
 
 assign:
     tID tASSIGN expr {sym_set_init($1); 
