@@ -80,9 +80,9 @@ def main():
 				if flags[1] == 1: 
 					i = int(ins[1])-1
 
-			# RET [M]
+			# RET [R]
 			elif opcode == "RET":
-				i = stack[sp + int(ins[1])] - 1
+				i = reg[sp + int(ins[1])] - 1
 			
 			# PSH [V]
 			elif opcode == "PUSH":

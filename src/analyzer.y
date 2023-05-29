@@ -90,7 +90,9 @@ function_entry:
   ;
 
 function:
-    function_entry block {asm_add(ASM_RET, 0, NIL, NIL, 1); sym_clear();}
+    function_entry block {asm_add(ASM_LDR, 0, 0, NIL, 2);
+                          asm_add(ASM_RET, 0, NIL, NIL, 1);
+                          sym_clear();}
   ;
 
 type:
@@ -381,6 +383,7 @@ funcreturn:
     tRETURN expr {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
                   asm_add(ASM_STR, sym_get_addr("?VAL"), 0, NIL, 2); 
                   sym_remove_last();
+                  asm_add(ASM_LDR, 0, 0, NIL, 2);
                   asm_add(ASM_RET, 0, NIL, NIL, 1);}
   ;
 
@@ -422,7 +425,7 @@ void yyerror(const char *msg) {
 
 int main(void) {
 
-  asm_add(ASM_AFF, 0, 255, NIL, 2);
+  asm_add(ASM_AFF, 0, 254, NIL, 2);
   asm_add(ASM_STR, 0, 0, NIL, 2);
   asm_add(ASM_B, NIL, NIL, NIL, 1);
 

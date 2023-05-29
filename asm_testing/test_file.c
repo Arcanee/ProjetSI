@@ -3,7 +3,10 @@
 
 */
 
+int f(int a) {print(a*a);return 0;}
+
 int main()
 {
-    print(77);
+    int n = 6;
+    f(n);
 }
