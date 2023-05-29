@@ -1,8 +1,8 @@
 def main(): 
 	print()
 	asm = []
-	stack = [0,0,0,0,0,0,0,0]
-	reg = [0,0,0,0]
+	stack = [0,0,0,0,0,0,0,0,0,0,0]
+	reg = [0,0,0,0,0,0,0,0]
 	flags = [0,0,0,0] # Neg, Zero, Carry, Overflow
 	sp = 0
 	print_info = [False, 0, "Printed value : "] # Do we print ? /// Value /// Text to display
@@ -82,7 +82,7 @@ def main():
 
 			# RET [R]
 			elif opcode == "RET":
-				i = reg[sp + int(ins[1])] - 1
+				i = reg[int(ins[1])] - 1
 			
 			# PSH [V]
 			elif opcode == "PUSH":

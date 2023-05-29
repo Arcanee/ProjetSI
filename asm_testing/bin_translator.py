@@ -18,6 +18,7 @@ def main():
             while len(ins) != 4:
                 ins.append("00")
 
+            f_bin.write("x\"")
             f_bin.write(op_to_str[ins[0]])
 
             a = ins[1]
@@ -47,6 +48,7 @@ def main():
             f_bin.write(a)
             f_bin.write(b)
             f_bin.write(c)
+            f_bin.write("\",")
             f_bin.write("\n")
 
 
