@@ -14,7 +14,7 @@ static char op_to_str[30][6] = {"NULL", "AFF", "COP", "ADD", "SUB", "MUL", "DIV"
 
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.
-static int tab_asm[1024][5];
+static int tab_asm[256][5];
 
 
 
