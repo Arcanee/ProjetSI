@@ -22,25 +22,29 @@
 [A-Za-z][A-Za-z0-9]*    {yylval.s = strdup(yytext); return tID;}
 
 "0x"[0-9A-Fa-f]+        {yylval.i = (int)strtol(yytext, NULL, 16); return tNB;}
-[0-9]+                {yylval.i = atoi(yytext); return tNB;}
+[0-9]+                  {yylval.i = atoi(yytext); return tNB;}
 
 "+"              {return tADD;}
 "-"              {return tSUB;}
 "*"              {return tMUL;}
 "/"              {return tDIV;}
 
-"<"              {return tLT;}
+"<"               {return tLT;}
 ">"               {return tGT;}
 "!="              {return tNEQ;}
 "=="              {return tEQ;}
 ">="              {return tGE;}
-"<="             {return tLE;}
+"<="              {return tLE;}
 
 "="               {return tASSIGN;}
 
-"&&"              {return tAND;}
-"||"            {return tOR;}
-"!"               {return tNOT;}
+"&"              {return tAND_b;}
+"&&"             {return tAND;}
+"|"              {return tOR_b;}
+"||"             {return tOR;}
+"!"              {return tNOT;}
+"~"              {return tNOT_b;}
+"^"              {return tXOR;}
 
 "{"              {return tLBRACE;}
 "}"              {return tRBRACE;}

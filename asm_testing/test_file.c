@@ -5,6 +5,5 @@
 
 int main()
 {
-    int a = 0xff;
-    print(a);
+    if (21 == 21) {return 55;}
 }

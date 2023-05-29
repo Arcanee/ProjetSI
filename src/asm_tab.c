@@ -8,8 +8,9 @@ static int push_value = -1;
 
 
 //Link between int and opcode string. NIL handles unimplemented op yet.
-static char op_to_str[25][6] = {"NULL", "AFF", "COP", "ADD", "SUB", "MUL", "DIV", "CMP", "B", "BEQ", "BNE",
-                                "BN", "BNZ", "BP", "BSP", "BF", "RET", "PUSH", "POP", "STR", "LDR", "PRINT"};
+static char op_to_str[30][6] = {"NULL", "AFF", "COP", "ADD", "SUB", "MUL", "DIV", "CMP", "B", "BEQ", "BNE",
+                                "BN", "BNZ", "BP", "BSP", "BF", "RET", "PUSH", "POP", "STR", "LDR", "PRINT",
+                                "AND", "OR", "NOT", "XOR"};
 
 
 //1024 instructions & 3 parameters maximum. To be changed if needed.

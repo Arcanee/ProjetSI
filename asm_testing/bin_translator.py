@@ -1,10 +1,10 @@
 def main():
     asm = []
-    op_to_str = {"NULL" : "00", "AFF" : "01", "COP" : "02", "ADD" : "03", "SUB" : "04",
-                "MUL" : "05", "DIV" : "06", "CMP" : "07", "B" : "08", "BEQ" : "09",
-                "BNE" : "0a", "BN" : "0b", "BNZ" : "0c", "BP" : "0d", "BSP" : "0e",
-                "BF" : "0f", "RET" : "10", "PUSH" : "11", "POP" : "12", "STR" : "13",
-                "LDR" : "14", "PRINT" : "15"}
+    op_to_str = {"NULL":"00", "AFF":"01", "COP":"02", "ADD":"03", "SUB":"04",
+                "MUL":"05", "DIV":"06", "CMP":"07", "B":"08", "BEQ":"09",
+                "BNE":"0a", "BN":"0b", "BNZ":"0c", "BP":"0d", "BSP":"0e",
+                "BF":"0f", "RET":"10", "PUSH":"11", "POP":"12", "STR":"13",
+                "LDR":"14", "PRINT":"15", "AND":"16", "OR":"17", "NOT":"18", "XOR":"19"}
 
     with open("asm_testing/asm_output", "r") as f_asm:
         lines = f_asm.readlines()
@@ -42,8 +42,8 @@ def main():
                 c = str(hex(int(c)))
                 c = c[2:]
                 c = c[-2:]
-                if len(b) == 1:
-                    b = "0" + b
+                if len(c) == 1:
+                    c = "0" + c
 
             f_bin.write(a)
             f_bin.write(" ")

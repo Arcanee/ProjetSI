@@ -129,6 +129,22 @@ def main():
 			elif opcode == "PRINT":
 				print_info[0] = True
 				print_info[1] = reg[int(ins[1])]
+
+			# AND [R] [R] [R]
+			elif opcode == "AND":
+				reg[int(ins[1])] = reg[int(ins[2])] & reg[int(ins[3])]
+
+			# OR [R] [R] [R]
+			elif opcode == "OR":
+				reg[int(ins[1])] = reg[int(ins[2])] | reg[int(ins[3])]
+
+			# NOT [R] [R]
+			elif opcode == "NOT":
+				reg[int(ins[1])] = ~reg[int(ins[2])]
+
+			# XOR [R] [R] [R]
+			elif opcode == "XOR":
+				reg[int(ins[1])] = reg[int(ins[2])] ^ reg[int(ins[3])]
 							 
 
 		i+=1

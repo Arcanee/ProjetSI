@@ -29,6 +29,10 @@
 #define ASM_STR 19 // Mem --> Reg
 #define ASM_LDR 20 // Mem --> Reg
 #define ASM_PRINT 21
+#define ASM_ANDb 22
+#define ASM_ORb 23
+#define ASM_NOTb 24
+#define ASM_XOR 25
 
 // Some opcodes are not used anymore. However, to keep a consistent order in the compiler,
 // interpreter and VHDL files, we kept all of them here.
@@ -60,7 +64,7 @@
 %type <branch_info> ifheader
 %type <f_type> type
 
-%token tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tOR tNOT tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
+%token tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tAND_b tOR tOR_b tNOT tNOT_b tXOR tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
 %left tADD tSUB
 %left tMUL tDIV
 
@@ -189,6 +193,28 @@ expr:
                     asm_add(ASM_DIV, 0, 0, 1, 3);
                     asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
                     sym_remove_last();}
+
+  | expr tAND_b expr {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                      asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
+                      asm_add(ASM_ANDb, 0, 0, 1, 3);
+                      asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
+                      sym_remove_last();}
+
+  | expr tOR_b expr  {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                      asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
+                      asm_add(ASM_ORb, 0, 0, 1, 3);
+                      asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
+                      sym_remove_last();}
+
+  | tNOT_b expr      {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
+                      asm_add(ASM_NOTb, 0, 0, NIL, 2);
+                      asm_add(ASM_STR, sym_last(), 0, NIL, 2);}
+
+  | expr tXOR expr   {asm_add(ASM_LDR, sym_next_last(), 0, NIL, 2);
+                      asm_add(ASM_LDR, sym_last(), 1, NIL, 2);
+                      asm_add(ASM_XOR, 0, 0, 1, 3);
+                      asm_add(ASM_STR, sym_next_last(), 0, NIL, 2); 
+                      sym_remove_last();}
 
   | tLPAR expr tRPAR
   | tADD expr
