@@ -65,8 +65,10 @@
 %type <f_type> type
 
 %token tPRINT tRETURN tINT tVOID tLT tLE tGT tGE tEQ tNEQ tASSIGN tADD tSUB tDIV tMUL tAND tAND_b tOR tOR_b tNOT tNOT_b tXOR tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
+
 %left tADD tSUB
 %left tMUL tDIV
+%left tAND_b tOR_b tNOT_b tXOR
 
 %left tOR
 %left tAND
