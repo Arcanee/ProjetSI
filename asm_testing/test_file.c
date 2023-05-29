@@ -5,5 +5,5 @@
 
 int main()
 {
-    if (21 == 21) {return 55;}
+    print(77);
 }

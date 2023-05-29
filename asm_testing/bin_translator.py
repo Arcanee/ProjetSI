@@ -19,7 +19,6 @@ def main():
                 ins.append("00")
 
             f_bin.write(op_to_str[ins[0]])
-            f_bin.write(" ")
 
             a = ins[1]
             if a != "00":
@@ -46,9 +45,7 @@ def main():
                     c = "0" + c
 
             f_bin.write(a)
-            f_bin.write(" ")
             f_bin.write(b)
-            f_bin.write(" ")
             f_bin.write(c)
             f_bin.write("\n")
 

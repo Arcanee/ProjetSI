@@ -125,10 +125,10 @@ def main():
 				if flags[0] == 0 and flags[1] == 0:
 					i = int(ins[1])-1
 
-			# PRINT [R]
+			# PRINT [R] [R] [R]
 			elif opcode == "PRINT":
 				print_info[0] = True
-				print_info[1] = reg[int(ins[1])]
+				print_info[1] = reg[int(ins[2])]
 
 			# AND [R] [R] [R]
 			elif opcode == "AND":

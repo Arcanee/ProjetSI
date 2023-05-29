@@ -360,8 +360,8 @@ loop:
 
 print:
     tPRINT tLPAR expr tRPAR {asm_add(ASM_LDR, sym_last(), 0, NIL, 2);
-                             asm_add(ASM_PRINT, 0, NIL, NIL, 1);
-                             sym_remove_last();}
+                             asm_add(ASM_PRINT, 0, 0, NIL, 2);
+                             sym_remove_last();} // reg to print is in 2nd param to be consistent with read/write in the VHDL file
 
 assign:
     tID tASSIGN expr {sym_set_init($1); 
