@@ -3,10 +3,34 @@
 
 */
 
-int f(int a) {print(a*a);return 0;}
+int factorielle(int n)
+{
+    int result = 0;
+    if (n == 0)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = factorielle(n-1) * n;
+    }
+    return result;
+}
 
 int main()
 {
-    int n = 6;
-    f(n);
+    int r;
+    int c = ((2+4) * 2) - 0xa;
+    c = c ^ 7;
+
+    if (c >= 7)
+    {
+        print(c);
+    }
+    else
+    {
+        r = factorielle(c);
+    }
+    print(r);
+    return r;
 }
