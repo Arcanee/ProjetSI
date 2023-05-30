@@ -35,7 +35,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity proc is port (
             CLK_STD : in STD_LOGIC;
-            --CLK_PRINT: in STD_LOGIC; 
+            RST : in STD_LOGIC; 
             MEM_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
             REG_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
             MEM_VAL : out STD_LOGIC_VECTOR(7 downto 0);
@@ -104,6 +104,7 @@ COMPONENT instr_pointer PORT(
           alea : in STD_LOGIC;
           load : in STD_LOGIC; 
           addr_in : in STD_LOGIC_VECTOR(7 downto 0);   
+          RST : in STD_LOGIC;
           addr : out STD_LOGIC_VECTOR(7 downto 0));
 END COMPONENT; 
 
@@ -252,21 +253,22 @@ END COMPONENT;
     signal reg_b_addr : STD_LOGIC_VECTOR(3 downto 0); 
     signal DIS : STD_LOGIC; 
     
-    signal div : STD_LOGIC_VECTOR(23 downto 0); 
-        signal clk : std_logic;
-        signal clk_print : std_logic;
+    signal div : STD_LOGIC_VECTOR(23 downto 0) := x"000000"; 
+     signal clk : std_logic;
+     signal clk_print : std_logic;
+    signal REAL_RST : STD_LOGIC; 
     
 begin
 
     process
     begin
-    wait until clk_print'event and clk_print = '1'; --The second clock alternate between the 2 segments
+    wait until clk_std'event and clk_std = '1'; --The second clock alternate between the 2 segments
     div <= div + 1;
     end process;
     clk <= div(20);
     clk_print <= div(18);
-
-    IP : instr_pointer port map (CLK, ALEA,  BRANCH, BRANCH_ADDR, INSTR_ADDR); 
+    REAL_RST <= '0' when RST = '1' else '1'; 
+    IP : instr_pointer port map (CLK, ALEA,  BRANCH, BRANCH_ADDR, REAL_RST, INSTR_ADDR); 
     INSTR_MEM : instruction_mem port map(INSTR_ADDR, mem_to_LI_DI);
     
     --slice the instruction 
@@ -316,7 +318,7 @@ begin
     INC <= '1' when OP_MEM = x"11" else '0';
     --pop 
     DEC <= '1' when OP_MEM = x"12" else '0'; 
-    MEM : data_mem port map(A_MEM, MEM_ADDR, B_MEM, RW_MEM,  A_MEM, INC, DEC, '1', CLK, MEM_MULIN, MEM_VAL); 
+    MEM : data_mem port map(A_MEM, MEM_ADDR, B_MEM, RW_MEM,  A_MEM, INC, DEC, REAL_RST, CLK, MEM_MULIN, MEM_VAL); 
     
     --yes it is the same operation but it is clearer with two different signals
     --########INPUT FOR MEM MUX ##############
@@ -354,7 +356,7 @@ begin
     regADDR_A <= A_DI(3 downto 0) when OP_ALEA_OUT = x"10" else B_DI_MULIN(3 downto 0); 
     A_DI_OUT <= DIS_VAL when OP_ALEA_OUT = x"10" else A_DI; 
    
-    REG : Banc_reg port map(regADDR_A, C_DI (3 downto 0),REG_ADDR(3 downto 0), A_to_regADDR(3 downto 0),  LC_to_regW, B_to_regDATA, '1', CLK, 
+    REG : Banc_reg port map(regADDR_A, C_DI (3 downto 0),REG_ADDR(3 downto 0), A_to_regADDR(3 downto 0),  LC_to_regW, B_to_regDATA, REAL_RST, CLK, 
                             DIS_VAL, REG_QB, REG_VAL);
     REG_QA <= DIS_VAL;   
     SEG_DISPLAY : seg_display_unit port map (CLK, CLK_PRINT, DIS, DIS_VAL, DISPLAY, AN);  

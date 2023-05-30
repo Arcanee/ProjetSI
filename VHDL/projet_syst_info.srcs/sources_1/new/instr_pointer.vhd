@@ -38,6 +38,7 @@ entity instr_pointer is
            alea : in STD_LOGIC;
            load : in STD_LOGIC; 
            addr_in : in STD_LOGIC_VECTOR(7 downto 0);   
+           RST : in STD_LOGIC;
            addr : out STD_LOGIC_VECTOR (7 downto 0));
            
            
@@ -51,15 +52,18 @@ begin
 process
 begin
    wait until clk'event and clk = '1';
-
-   if load = '1' then 
-        a <= addr_in; 
-    else
-        if alea = '0' and a /= x"fe" then 
-            a <= a+1; 
-
-        end if; 
-    end if; 
+   if RST = '0' then 
+        a <= x"ff"; 
+   else 
+       if load = '1' then 
+            a <= addr_in; 
+        else
+            if alea = '0' and a /= x"fe" then 
+                a <= a+1; 
+    
+            end if; 
+        end if;
+   end if; 
    
 end process;
 addr <= a; 

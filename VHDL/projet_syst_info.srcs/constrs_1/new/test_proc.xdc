@@ -81,6 +81,6 @@ set_property -dict {PACKAGE_PIN U4 IOSTANDARD LVCMOS33} [get_ports {AN[1]}]
 set_property -dict {PACKAGE_PIN V4 IOSTANDARD LVCMOS33} [get_ports {AN[2]}]
 set_property -dict {PACKAGE_PIN W4 IOSTANDARD LVCMOS33} [get_ports {AN[3]}]
 
-
+set_property -dict {PACKAGE_PIN U18 IOSTANDARD LVCMOS33} [get_ports {RST}]
 
 #create_clock -period 30.303 -name CLK_PRINT -waveform {0.000 15.152} [get_ports CLK_PRINT]
