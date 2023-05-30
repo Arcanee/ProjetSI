@@ -36,8 +36,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity proc is port (
             CLK_STD : in STD_LOGIC;
             RST : in STD_LOGIC; 
-            MEM_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
-            REG_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
+            MEM_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
+            REG_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
+            INPUT_VAL: in STD_LOGIC_VECTOR(7 downto 0);
             MEM_VAL : out STD_LOGIC_VECTOR(7 downto 0);
             REG_VAL : out STD_LOGIC_VECTOR(7 downto 0);
             DISPLAY : out STD_LOGIC_VECTOR(6 downto 0); 
@@ -147,7 +148,7 @@ COMPONENT LC_MULT_DI PORT(
 END COMPONENT; 
 
 COMPONENT data_mem      Port ( addr : in STD_LOGIC_VECTOR (7 downto 0);
-           addr2 : in STD_LOGIC_VECTOR (7 downto 0);--for the fpga demo
+           addr2 : in STD_LOGIC_VECTOR (3 downto 0);--for the fpga demo
            dataIN : in STD_LOGIC_VECTOR (7 downto 0);
            RW : in STD_LOGIC;
            pp_value : in STD_LOGIC_VECTOR (7 downto 0); --push pop value
@@ -237,7 +238,7 @@ END COMPONENT;
     --Inputs for the multiplexors 
     signal OP_MUL_MEM, OP_MUL_LDR : STD_LOGIC;
     signal INC, DEC : STD_LOGIC; --for the stack pointer
-    
+    signal INPUT_VAL_MEM, INPUT_ADDR_MEM : STD_LOGIC_VECTOR(7 downto 0) ; --allow the input with the fpga
     signal RW_MEM : STD_LOGIC; --LC output (read or not in the data mem)  
     
     --Values from the last pipeline to the register (writting adress and data) 
@@ -265,7 +266,8 @@ begin
     wait until clk_std'event and clk_std = '1'; --The second clock alternate between the 2 segments
     div <= div + 1;
     end process;
-    clk <= div(20);
+    --clk <= clk_std;
+    clk <= div(20); 
     clk_print <= div(18);
     REAL_RST <= '0' when RST = '1' else '1'; 
     IP : instr_pointer port map (CLK, ALEA,  BRANCH, BRANCH_ADDR, REAL_RST, INSTR_ADDR); 
@@ -318,7 +320,10 @@ begin
     INC <= '1' when OP_MEM = x"11" else '0';
     --pop 
     DEC <= '1' when OP_MEM = x"12" else '0'; 
-    MEM : data_mem port map(A_MEM, MEM_ADDR, B_MEM, RW_MEM,  A_MEM, INC, DEC, REAL_RST, CLK, MEM_MULIN, MEM_VAL); 
+    
+    INPUT_VAL_MEM <= INPUT_VAL when OP_MEM = x"ff" else B_MEM; 
+    INPUT_ADDR_MEM <= x"02" when OP_MEM = x"ff" else A_MEM; 
+    MEM : data_mem port map(INPUT_ADDR_MEM, MEM_ADDR, INPUT_VAL_MEM, RW_MEM,  A_MEM, INC, DEC, REAL_RST, CLK, MEM_MULIN, MEM_VAL); 
     
     --yes it is the same operation but it is clearer with two different signals
     --########INPUT FOR MEM MUX ##############
@@ -356,7 +361,7 @@ begin
     regADDR_A <= A_DI(3 downto 0) when OP_ALEA_OUT = x"10" else B_DI_MULIN(3 downto 0); 
     A_DI_OUT <= DIS_VAL when OP_ALEA_OUT = x"10" else A_DI; 
    
-    REG : Banc_reg port map(regADDR_A, C_DI (3 downto 0),REG_ADDR(3 downto 0), A_to_regADDR(3 downto 0),  LC_to_regW, B_to_regDATA, REAL_RST, CLK, 
+    REG : Banc_reg port map(regADDR_A, C_DI (3 downto 0),REG_ADDR, A_to_regADDR(3 downto 0),  LC_to_regW, B_to_regDATA, REAL_RST, CLK, 
                             DIS_VAL, REG_QB, REG_VAL);
     REG_QA <= DIS_VAL;   
     SEG_DISPLAY : seg_display_unit port map (CLK, CLK_PRINT, DIS, DIS_VAL, DISPLAY, AN);  

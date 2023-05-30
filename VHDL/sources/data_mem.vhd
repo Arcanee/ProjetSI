@@ -34,7 +34,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity data_mem is
     Port ( addr : in STD_LOGIC_VECTOR (7 downto 0);
-           addr2 : in STD_LOGIC_VECTOR (7 downto 0);--for the fpga demo
+           addr2 : in STD_LOGIC_VECTOR (3 downto 0);--for the fpga demo
            dataIN : in STD_LOGIC_VECTOR (7 downto 0);
            RW : in STD_LOGIC;
            pp_value : in STD_LOGIC_VECTOR (7 downto 0); --push pop value

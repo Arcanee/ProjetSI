@@ -45,7 +45,7 @@ entity instr_pointer is
 end instr_pointer;
 
 architecture Behavioral of instr_pointer is
-signal a : STD_LOGIC_VECTOR(7 downto 0) := x"ff";  
+signal a : STD_LOGIC_VECTOR(7 downto 0) := x"fe";  
 begin
 
 
@@ -58,7 +58,7 @@ begin
        if load = '1' then 
             a <= addr_in; 
         else
-            if alea = '0' and a /= x"fe" then 
+            if alea = '0' and a /= x"fd" then 
                 a <= a+1; 
     
             end if; 

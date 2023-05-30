@@ -24,21 +24,21 @@ create_clock -period 10.000 -name sysclk_pin -waveform {0.000 5.000} [get_ports 
 
 
 
-set_property -dict {PACKAGE_PIN R2 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[7]}]
-set_property -dict {PACKAGE_PIN T1 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[6]}]
-set_property -dict {PACKAGE_PIN U1 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[5]}]
-set_property -dict {PACKAGE_PIN W2 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[4]}]
-set_property -dict {PACKAGE_PIN R3 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[3]}]
-set_property -dict {PACKAGE_PIN T2 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[2]}]
-set_property -dict {PACKAGE_PIN T3 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[1]}]
-set_property -dict {PACKAGE_PIN V2 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[0]}]
+set_property -dict {PACKAGE_PIN R2 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[7]}]
+set_property -dict {PACKAGE_PIN T1 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[6]}]
+set_property -dict {PACKAGE_PIN U1 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[5]}]
+set_property -dict {PACKAGE_PIN W2 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[4]}]
+set_property -dict {PACKAGE_PIN R3 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[3]}]
+set_property -dict {PACKAGE_PIN T2 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[2]}]
+set_property -dict {PACKAGE_PIN T3 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[1]}]
+set_property -dict {PACKAGE_PIN V2 IOSTANDARD LVCMOS33} [get_ports {INPUT_VAL[0]}]
 
 
 
-set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[7]}]
-set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[6]}]
-set_property -dict {PACKAGE_PIN V15 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[5]}]
-set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[4]}]
+set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[3]}]
+set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[2]}]
+set_property -dict {PACKAGE_PIN V15 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[1]}]
+set_property -dict {PACKAGE_PIN W15 IOSTANDARD LVCMOS33} [get_ports {MEM_ADDR[0]}]
 set_property -dict {PACKAGE_PIN W17 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[3]}]
 set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[2]}]
 set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS33} [get_ports {REG_ADDR[1]}]

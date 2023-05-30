@@ -40,15 +40,16 @@ architecture Behavioral of test_proc is
 COMPONENT proc PORT (
             CLK_STD : in STD_LOGIC;
             RST : in STD_LOGIC; 
-            MEM_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
-            REG_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
+            MEM_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
+            REG_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
+            INPUT_VAL: in STD_LOGIC_VECTOR(7 downto 0);
             MEM_VAL : out STD_LOGIC_VECTOR(7 downto 0);
             REG_VAL : out STD_LOGIC_VECTOR(7 downto 0);
             DISPLAY : out STD_LOGIC_VECTOR(6 downto 0); 
             AN : out STD_LOGIC_VECTOR(3 downto 0)
             );
 END COMPONENT;         
-signal test_MEM_ADDR, test_REG_ADDR : STD_LOGIC_VECTOR(7 downto 0) := x"00"; 
+signal test_MEM_ADDR, test_REG_ADDR : STD_LOGIC_VECTOR(3 downto 0) := x"0"; 
 signal test_MEM_VAL, test_REG_VAL :STD_LOGIC_VECTOR(7 downto 0); 
 signal test_DISPLAY : STD_LOGIC_VECTOR(6 downto 0); 
 signal test_AN : STD_LOGIC_VECTOR(3 downto 0);
@@ -56,7 +57,7 @@ signal test_CLK, test_RST : STD_LOGIC := '0';
 constant T : TIME := 10ns; 
 begin
 
-    proc_test : proc port map(test_CLK, test_RST, test_MEM_ADDR, test_REG_ADDR, test_MEM_VAL, test_REG_VAL, test_DISPLAY, test_AN);
+    proc_test : proc port map(test_CLK, test_RST, test_MEM_ADDR, test_REG_ADDR, x"05", test_MEM_VAL, test_REG_VAL, test_DISPLAY, test_AN);
     process 
     begin 
         test_CLK <= not test_CLK; 

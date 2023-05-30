@@ -3,6 +3,8 @@
 
 */
 
+// TESTER SANS METTRE DE PARAMETRE AU MAIN
+
 int factorielle(int n)
 {
     int result = 0;
@@ -14,23 +16,18 @@ int factorielle(int n)
     {
         result = factorielle(n-1) * n;
     }
+    print(result);
     return result;
 }
 
-int main()
+int main(int a)
 {
-    int r;
-    int c = ((2+4) * 2) - 0xa;
-    c = c ^ 7;
-
-    if (c >= 7)
+    if (a)
     {
-        print(c);
+        int i = factorielle(a);
     }
     else
     {
-        r = factorielle(c);
+        print(0xee);
     }
-    print(r);
-    return r;
 }

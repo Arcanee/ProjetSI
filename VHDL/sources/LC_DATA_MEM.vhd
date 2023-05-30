@@ -39,9 +39,9 @@ end LC_DATA_MEM;
 architecture Behavioral of LC_DATA_MEM is
    
 begin
-    -- 1 <-- ldr(20) | 0 <-- str(19)
+    -- 1 <-- ldr(x14) | 0 <-- str(x13) or input value 
     output <= '0' when (
-                        OP = x"13") else 
+                        OP = x"13" or OP = x"ff") else 
                '1';
                     
     
