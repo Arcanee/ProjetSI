@@ -21,6 +21,8 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -32,8 +34,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity proc is port (
-            CLK : in STD_LOGIC;
-            CLK_PRINT: in STD_LOGIC; 
+            CLK_STD : in STD_LOGIC;
+            --CLK_PRINT: in STD_LOGIC; 
             MEM_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
             REG_ADDR : in STD_LOGIC_VECTOR(7 downto 0);
             MEM_VAL : out STD_LOGIC_VECTOR(7 downto 0);
@@ -250,7 +252,20 @@ END COMPONENT;
     signal reg_b_addr : STD_LOGIC_VECTOR(3 downto 0); 
     signal DIS : STD_LOGIC; 
     
+    signal div : STD_LOGIC_VECTOR(23 downto 0); 
+        signal clk : std_logic;
+        signal clk_print : std_logic;
+    
 begin
+
+    process
+    begin
+    wait until clk_print'event and clk_print = '1'; --The second clock alternate between the 2 segments
+    div <= div + 1;
+    end process;
+    clk <= div(20);
+    clk_print <= div(18);
+
     IP : instr_pointer port map (CLK, ALEA,  BRANCH, BRANCH_ADDR, INSTR_ADDR); 
     INSTR_MEM : instruction_mem port map(INSTR_ADDR, mem_to_LI_DI);
     

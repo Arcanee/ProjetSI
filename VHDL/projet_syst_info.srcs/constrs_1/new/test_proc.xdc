@@ -8,15 +8,19 @@
 # L1, P1, N3, P3, U3, W3, V3, V13, V14, U14, U15, W18, V19, U19, E19, U16
 #Horloge sur un bouton
 
-set_property -dict { PACKAGE_PIN W5 IOSTANDARD LVCMOS33 } [get_ports {CLK } ]
-create_clock -name sysclk_pin -period 10.00 -waveform { 0 5 } [get_ports {CLK}]
+set_property -dict {PACKAGE_PIN W5 IOSTANDARD LVCMOS33} [get_ports CLK_STD]
+create_clock -period 10.000 -name sysclk_pin -waveform {0.000 5.000} [get_ports CLK_STD]
 
-set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets CLK_PRINT]
-set_property -dict {PACKAGE_PIN W19 IOSTANDARD LVCMOS33} [get_ports CLK_PRINT]
+#set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets CLK_PRINT]
+#set_property -dict {PACKAGE_PIN W19 IOSTANDARD LVCMOS33} [get_ports CLK_PRINT]
 
 #set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets CLK]
 #set_property -dict {PACKAGE_PIN T17 IOSTANDARD LVCMOS33} [get_ports CLK]
 
+
+
+
+ #set_property -dicset_property -dict {PACKAGE_PIN W5 IOSTANDARD LVCMOS33} [get_ports CLK]
 
 
 
@@ -64,17 +68,19 @@ set_property -dict {PACKAGE_PIN U16 IOSTANDARD LVCMOS33} [get_ports {REG_VAL[0]}
 
 
 
-set_property -dict {PACKAGE_PIN W7 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[6]}] 
-set_property -dict {PACKAGE_PIN W6 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[5]}] 
-set_property -dict {PACKAGE_PIN U8 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[4]}] 
-set_property -dict {PACKAGE_PIN V8 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[3]}] 
-set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[2]}] 
-set_property -dict {PACKAGE_PIN V5 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[1]}] 
-set_property -dict {PACKAGE_PIN U7 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[0]}] 
+set_property -dict {PACKAGE_PIN W7 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[6]}]
+set_property -dict {PACKAGE_PIN W6 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[5]}]
+set_property -dict {PACKAGE_PIN U8 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[4]}]
+set_property -dict {PACKAGE_PIN V8 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[3]}]
+set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[2]}]
+set_property -dict {PACKAGE_PIN V5 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[1]}]
+set_property -dict {PACKAGE_PIN U7 IOSTANDARD LVCMOS33} [get_ports {DISPLAY[0]}]
 
-set_property -dict {PACKAGE_PIN U2 IOSTANDARD LVCMOS33} [get_ports {AN[0]}] 
-set_property -dict {PACKAGE_PIN U4 IOSTANDARD LVCMOS33} [get_ports {AN[1]}] 
-set_property -dict {PACKAGE_PIN V4 IOSTANDARD LVCMOS33} [get_ports {AN[2]}] 
-set_property -dict {PACKAGE_PIN W4 IOSTANDARD LVCMOS33} [get_ports {AN[3]}] 
+set_property -dict {PACKAGE_PIN U2 IOSTANDARD LVCMOS33} [get_ports {AN[0]}]
+set_property -dict {PACKAGE_PIN U4 IOSTANDARD LVCMOS33} [get_ports {AN[1]}]
+set_property -dict {PACKAGE_PIN V4 IOSTANDARD LVCMOS33} [get_ports {AN[2]}]
+set_property -dict {PACKAGE_PIN W4 IOSTANDARD LVCMOS33} [get_ports {AN[3]}]
 
 
+
+#create_clock -period 30.303 -name CLK_PRINT -waveform {0.000 15.152} [get_ports CLK_PRINT]
