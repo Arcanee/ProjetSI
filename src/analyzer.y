@@ -139,7 +139,7 @@ instruction:
   | assign tSEMI
   | declar tSEMI
   | funcreturn tSEMI
-  | funccall tSEMI
+  | funccall tSEMI {sym_remove_last();}
   | loop 
   | condins
   | block
